@@ -90,8 +90,6 @@ public class DefaultTOTPService implements TOTPService {
         notNull(length);
         notNull(shaAlgorithm);
 
-        // TODO verify secret length with respect to algorithm?
-
         final long now = clock.now().toEpochMilli();
         final long numberOfSteps = (now - t0.toEpochMilli()) / stepSize.toMillis(); // aka T
 
