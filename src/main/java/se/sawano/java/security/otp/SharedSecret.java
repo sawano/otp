@@ -25,46 +25,67 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Objects;
 
+import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
-// TODO should algorithm be included?
 // TODO clean up factory methods
 public final class SharedSecret implements Externalizable {
 
-    private static final Charset UTF_8 = Charset.forName("UTF8");
-
-    public static SharedSecret from(final String value) {
-        return from(value, UTF_8);
+    public static SharedSecret from(final String value, final ShaAlgorithm algorithm) {
+        return from(value, UTF_8, algorithm);
     }
 
-    public static SharedSecret from(final String value, final Charset charset) {
+    public static SharedSecret from(final String value, final Charset charset, final ShaAlgorithm algorithm) {
         notNull(value);
         notNull(charset);
 
-        return fromHex(Hex.encodeHexString(value.getBytes(charset)));
+        return fromHex(Hex.encodeHexString(value.getBytes(charset)), algorithm);
     }
 
-    public static SharedSecret fromHex(final String hexString) {
+    public static SharedSecret fromHex(final String hexString, final ShaAlgorithm algorithm) {
         notNull(hexString);
 
         try {
             final byte[] decode = Hex.decodeHex(hexString.toCharArray());
-            return new SharedSecret(decode);
+            return new SharedSecret(decode, algorithm);
         } catch (final DecoderException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private final byte[] value;
+    private static final Charset UTF_8 = Charset.forName("UTF8");
+    private static HashMap<ShaAlgorithm, Integer> ALGORITHM_TO_BYTES = new HashMap<>();
+    static {
+        ALGORITHM_TO_BYTES.put(ShaAlgorithm.SHA1, 20);
+        ALGORITHM_TO_BYTES.put(ShaAlgorithm.SHA256, 32);
+        ALGORITHM_TO_BYTES.put(ShaAlgorithm.SHA512, 64);
+    }
 
-    private SharedSecret(final byte[] value) {
-        // TODO check length
+    private final byte[] value;
+    private final ShaAlgorithm algorithm;
+
+    private SharedSecret(final byte[] value, final ShaAlgorithm algorithm) {
+        notNull(value);
+        notNull(algorithm);
+        isTrue(value.length == expectedBytesFor(algorithm), "Unexpected number of bytes. Expected: %d, got %d", expectedBytesFor(algorithm), value.length);
+
         this.value = value;
+        this.algorithm = algorithm;
+    }
+
+    private static Integer expectedBytesFor(final ShaAlgorithm algorithm) {
+        return ALGORITHM_TO_BYTES.get(algorithm);
     }
 
     public byte[] value() {
         return value;
+    }
+
+    public ShaAlgorithm algorithm() {
+        return algorithm;
     }
 
     public String asHexString() {
@@ -79,13 +100,14 @@ public final class SharedSecret implements Externalizable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final SharedSecret that = (SharedSecret) o;
-        return Arrays.equals(value, that.value);
+        final SharedSecret secret = (SharedSecret) o;
+        return Arrays.equals(value, secret.value) &&
+                algorithm == secret.algorithm;
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(value);
+        return Objects.hash(value, algorithm);
     }
 
     @Override

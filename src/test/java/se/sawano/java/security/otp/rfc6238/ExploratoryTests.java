@@ -20,6 +20,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
 
 import java.math.BigInteger;
@@ -49,12 +50,13 @@ public class ExploratoryTests {
 
     @Test
     public void should_perform_TOTP() throws Exception {
+        System.out.println("--> " + hexStr2Bytes(seed).length);
 
         final ReferenceDataRepository testData = new ReferenceDataRepository().init();
 
         final ReferenceDataRepository.ReferenceData data = testData.getForMode(ReferenceDataRepository.ReferenceData.Mode.SHA512);
 
-        final SharedSecret sharedSecret = SharedSecret.fromHex(seed64);
+        final SharedSecret sharedSecret = SharedSecret.fromHex(seed64, ShaAlgorithm.SHA512);
         assertArrayEquals(hexStr2Bytes(seed64), sharedSecret.value());
 
         final int numberOfDigitsInCode = 8;

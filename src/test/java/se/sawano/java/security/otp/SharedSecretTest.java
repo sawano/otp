@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertArrayEquals;
+import static se.sawano.java.security.otp.ShaAlgorithm.*;
 
 @RunWith(Parameterized.class)
 public class SharedSecretTest {
@@ -34,13 +35,16 @@ public class SharedSecretTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {whenSeedIs("3132333435363738393031323334353637383930"),
+                 andAlgorithmIs(SHA1),
                  thenProducedBytesAre(hexStr2Bytes("3132333435363738393031323334353637383930"))},
                 {whenSeedIs("3132333435363738393031323334353637383930313233343536373839303132"),
+                 andAlgorithmIs(SHA256),
                  thenProducedBytesAre(hexStr2Bytes("3132333435363738393031323334353637383930313233343536373839303132"))},
                 {whenSeedIs("3132333435363738393031323334353637383930" +
                                     "3132333435363738393031323334353637383930" +
                                     "3132333435363738393031323334353637383930" +
                                     "31323334"),
+                 andAlgorithmIs(SHA512),
                  thenProducedBytesAre(hexStr2Bytes("3132333435363738393031323334353637383930" +
                                                            "3132333435363738393031323334353637383930" +
                                                            "3132333435363738393031323334353637383930" +
@@ -50,22 +54,28 @@ public class SharedSecretTest {
 
     }
 
-    private static byte[] thenProducedBytesAre(final byte[] bytes) {
-        return bytes;
-    }
-
     private static String whenSeedIs(final String s) {
         return s;
+    }
+
+    private static ShaAlgorithm andAlgorithmIs(final ShaAlgorithm algorithm) {
+        return algorithm;
+    }
+
+    private static byte[] thenProducedBytesAre(final byte[] bytes) {
+        return bytes;
     }
 
     @Parameterized.Parameter(0)
     public String seed;
     @Parameterized.Parameter(1)
+    public ShaAlgorithm algorithm;
+    @Parameterized.Parameter(2)
     public byte[] expectedBytes;
 
     @Test
     public void should_produce_correct_bytes() throws Exception {
-        assertArrayEquals(expectedBytes, SharedSecret.fromHex(seed).value());
+        assertArrayEquals(expectedBytes, SharedSecret.fromHex(seed, algorithm).value());
     }
 
     private static byte[] hexStr2Bytes(final String hex) {
