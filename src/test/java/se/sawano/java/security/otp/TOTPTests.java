@@ -26,7 +26,7 @@ import static se.sawano.java.security.otp.Assertions.assertNotReadable;
 import static se.sawano.java.security.otp.Assertions.assertNotWritable;
 import static se.sawano.java.security.otp.TOTP.Length.*;
 
-public class TOTPTest {
+public class TOTPTests {
 
     @Rule
     public ExpectedException expectation = ExpectedException.none();

@@ -35,7 +35,7 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class DefaultTOTPServiceRegressionTest {
+public class DefaultTOTPServiceRegressionTests {
 
     // Seed for HMAC-SHA1 - 20 bytes
     private static final String seed = "3132333435363738393031323334353637383930";

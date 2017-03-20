@@ -29,7 +29,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static se.sawano.java.security.otp.ShaAlgorithm.*;
 
 @RunWith(Parameterized.class)
-public class SharedSecretTest {
+public class SharedSecretByteConversionTests {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
