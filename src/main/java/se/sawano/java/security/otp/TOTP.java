@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
 public final class TOTP implements Externalizable {
@@ -55,9 +56,12 @@ public final class TOTP implements Externalizable {
 
     public TOTP(final int value, final Length length) {
         notNull(length);
-        // TODO are negative values valid?
+        isTrue(value >= 0, "Value cannot be negative");
 
-        this.value = StringUtils.leftPad(Integer.toString(value), length.value(), '0');
+        final String paddedString = StringUtils.leftPad(Integer.toString(value), length.value(), '0');
+        isTrue(paddedString.length() == length.value(), "Value must have length: %d. Was: %d", length.value(), paddedString.length());
+
+        this.value = paddedString;
         this.length = length;
     }
 
