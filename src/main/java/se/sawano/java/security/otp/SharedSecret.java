@@ -17,6 +17,7 @@
 package se.sawano.java.security.otp;
 
 import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 
 import java.io.Externalizable;
@@ -47,13 +48,22 @@ public final class SharedSecret implements Externalizable {
 
     public static SharedSecret fromHex(final String hexString, final ShaAlgorithm algorithm) {
         notNull(hexString);
+        notNull(algorithm);
 
         try {
-            final byte[] decode = Hex.decodeHex(hexString.toCharArray());
-            return new SharedSecret(decode, algorithm);
+            final byte[] bytes = Hex.decodeHex(hexString.toCharArray());
+            return new SharedSecret(bytes, algorithm);
         } catch (final DecoderException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static SharedSecret fromBase32(final String base32String, final ShaAlgorithm algorithm) {
+        notNull(base32String);
+        notNull(algorithm);
+
+        final byte[] bytes = new Base32(false).decode(base32String);
+        return new SharedSecret(bytes, algorithm);
     }
 
     private static final Charset UTF_8 = Charset.forName("UTF8");

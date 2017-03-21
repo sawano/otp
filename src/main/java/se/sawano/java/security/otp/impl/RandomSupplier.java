@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp;
+package se.sawano.java.security.otp.impl;
 
-// TODO not finished
-public interface SecretService {
+@FunctionalInterface
+public interface RandomSupplier {
 
-    /**
-     * Create a new shared secret.
-     *
-     * @param algorithm
-     *         the algorithm to create a secret for
-     *
-     * @return the newly generated secret
-     */
-    SharedSecret generateSharedSecret(ShaAlgorithm algorithm);
+    void nextBytes(byte[] bytes);
 
 }
