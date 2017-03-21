@@ -18,19 +18,39 @@ package se.sawano.java.security.otp.impl;
 
 import java.security.SecureRandom;
 
+import static org.apache.commons.lang3.Validate.isTrue;
+
+/**
+ * A {@link RandomSupplier} backed by {@link SecureRandom}. The underlying {@link SecureRandom} will be reseeded after a set number of invocations. The {@link SecureRandom} instance used is seeded
+ * on creation.
+ *
+ * <p> This supplier is thread safe. </p>
+ */
 public class DefaultRandomSupplier implements RandomSupplier {
 
-    private static final int MAX_ITERATIONS = 500_000;
+    /**
+     * Maximum number of invocations before reseeding the {@link SecureRandom}.
+     */
+    public static final int MAX_INVOCATIONS = 500_000;
+
     private SecureRandom random;
-    private volatile int counter = 0;
+    private final int maxInvocations;
+    private int counter = 0;
 
     public DefaultRandomSupplier() {
+        this(MAX_INVOCATIONS);
+    }
+
+    public DefaultRandomSupplier(final int maxInvocations) {
+        isTrue(maxInvocations > 0, "Max number of invocations must be greater than 0");
+
+        this.maxInvocations = maxInvocations;
         random = createRandom();
     }
 
     @Override
     public synchronized void nextBytes(final byte[] bytes) {
-        if (counter >= MAX_ITERATIONS) {
+        if (counter >= maxInvocations) {
             random = createRandom();
         }
 
