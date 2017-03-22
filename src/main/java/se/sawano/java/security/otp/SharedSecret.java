@@ -63,6 +63,13 @@ public final class SharedSecret implements Externalizable {
         notNull(algorithm);
 
         final byte[] bytes = new Base32(false).decode(base32String);
+        return from(bytes, algorithm);
+    }
+
+    public static SharedSecret from(final byte[] bytes, final ShaAlgorithm algorithm) {
+        notNull(bytes);
+        notNull(algorithm);
+
         return new SharedSecret(bytes, algorithm);
     }
 

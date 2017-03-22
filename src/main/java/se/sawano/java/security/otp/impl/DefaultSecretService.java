@@ -16,36 +16,40 @@
 
 package se.sawano.java.security.otp.impl;
 
-import org.apache.commons.codec.binary.Base64;
 import se.sawano.java.security.otp.SecretService;
+import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
 
-import java.security.SecureRandom;
-import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
 public class DefaultSecretService implements SecretService {
 
-    private final Random random;
+    private final RandomSupplier random;
+    private final Map<ShaAlgorithm, Integer> algorithmToNumberOfBytes = new HashMap<>();
 
     public DefaultSecretService() {
-        this(new SecureRandom());
+        this(new DefaultRandomSupplier());
     }
 
-    public DefaultSecretService(final Random random) {
+    public DefaultSecretService(final RandomSupplier random) {
         notNull(random);
+
         this.random = random;
+        // TODO consolidate with SharedSecret?
+        algorithmToNumberOfBytes.put(ShaAlgorithm.SHA1, 20);
+        algorithmToNumberOfBytes.put(ShaAlgorithm.SHA256, 32);
+        algorithmToNumberOfBytes.put(ShaAlgorithm.SHA512, 64);
     }
 
-    @Override
-    public SharedSecret generateSharedSecret() {
-        // TODO implement
-        final byte[] bytes = new byte[10];
+    public SharedSecret generateSharedSecret(final ShaAlgorithm algorithm) {
+        final byte[] bytes = new byte[algorithmToNumberOfBytes.get(algorithm)];
+
         random.nextBytes(bytes);
-        final String s1 = java.util.Base64.getEncoder().encodeToString(bytes);
-        final String s = Base64.encodeBase64String(bytes);
-        return null;
+
+        return SharedSecret.from(bytes, algorithm);
     }
 
 }

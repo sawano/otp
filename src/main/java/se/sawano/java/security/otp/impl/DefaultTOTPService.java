@@ -118,6 +118,10 @@ public class DefaultTOTPService implements TOTPService {
         }
     }
 
+    /**
+     * Truncates the hash. I.e. converts it to binary code, which is a 31-bit, unsigned,
+     * big-endian integer; the first byte is masked with a 0x7f. (see RFC4226)
+     */
     private static int truncate(final byte[] hash) {
         final int offset = hash[hash.length - 1] & 0xf;
 
