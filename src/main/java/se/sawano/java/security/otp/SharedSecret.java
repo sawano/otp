@@ -101,6 +101,15 @@ public final class SharedSecret implements Externalizable {
         return value;
     }
 
+    /**
+     * Returns the length of the secret, in number of bytes.
+     *
+     * @return the number of bytes in this secret
+     */
+    public int keyLength() {
+        return value.length;
+    }
+
     public ShaAlgorithm algorithm() {
         return algorithm;
     }

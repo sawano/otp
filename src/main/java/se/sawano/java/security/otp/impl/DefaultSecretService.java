@@ -45,7 +45,13 @@ public class DefaultSecretService implements SecretService {
     }
 
     public SharedSecret generateSharedSecret(final ShaAlgorithm algorithm) {
-        final byte[] bytes = new byte[algorithmToNumberOfBytes.get(algorithm)];
+        notNull(algorithm);
+
+        return generateSharedSecret(algorithm, algorithmToNumberOfBytes.get(algorithm));
+    }
+
+    public SharedSecret generateSharedSecret(final ShaAlgorithm algorithm, final int numberOfBytes) {
+        final byte[] bytes = new byte[numberOfBytes];
 
         random.nextBytes(bytes);
 

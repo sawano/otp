@@ -19,7 +19,6 @@ package se.sawano.java.security.otp.impl;
 import org.junit.Test;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.TOTP;
 
 import static org.junit.Assert.assertEquals;
 import static se.sawano.java.security.otp.ShaAlgorithm.*;
@@ -67,17 +66,6 @@ public class DefaultSecretServiceTest {
         thenSecretShouldHaveCorrectAlgorithm();
         thenNumberOfBytesInSecretIs(64);
         thenHexSecretIs(EXPECTED_SHA512_HEX_SECRET_FROM_RFC_6238_EXAMPLE);
-    }
-
-    @Test
-    public void should_print_totp() throws Exception {
-        final String secretB32 = "ZEJHUB2WISYTMOUMDNM7GO5URLKS7TXC";
-
-        final SharedSecret secret = SharedSecret.fromBase32(secretB32, SHA1);
-
-        final TOTP totp = new DefaultTOTPService().create(secret, TOTP.Length.SIX, secret.algorithm());
-
-        System.out.println(totp.value());
     }
 
     private void givenAlgorithm(final ShaAlgorithm algorithm) {
