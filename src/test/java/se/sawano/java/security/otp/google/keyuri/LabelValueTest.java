@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.keyuri;
+package se.sawano.java.security.otp.google.keyuri;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import se.sawano.java.security.otp.keyuri.Label.AccountName;
-import se.sawano.java.security.otp.keyuri.Label.Issuer;
+import se.sawano.java.security.otp.google.keyuri.Label.AccountName;
+import se.sawano.java.security.otp.google.keyuri.Label.Issuer;
 
 import java.util.Arrays;
 import java.util.Collection;

@@ -14,28 +14,27 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.keyuri.parameters;
+package se.sawano.java.security.otp.google.keyuri.parameters;
 
 /**
- * OPTIONAL: The algorithm may have the values:
- * <ul>
- * <li>SHA1 (Default)</li>
- * <li>SHA256</li>
- * <li>SHA512</li>
- * </ul>
- * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#algorithm
+ * OPTIONAL: The digits parameter may have the values 6 or 8, and determines how long of a one-time passcode to display to the user. The default is 6.
+ *
+ * <p>
+ * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#digits
+ * </p>
  */
-public enum Algorithm {
+public enum Digits {
 
-    SHA1("SHA1"),
-    SHA256("SHA256"),
-    SHA512("SHA512");
+    SIX(6),
+    EIGHT(8);
 
-    private final String value;
+    private final int value;
 
-    Algorithm(final String value) {this.value = value;}
+    Digits(final int value) {
+        this.value = value;
+    }
 
-    public String value() {
+    public int value() {
         return value;
     }
 }

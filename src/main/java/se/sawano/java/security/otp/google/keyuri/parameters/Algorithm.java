@@ -14,22 +14,28 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.keyuri.parameters;
+package se.sawano.java.security.otp.google.keyuri.parameters;
 
-import org.junit.Test;
+/**
+ * OPTIONAL: The algorithm may have the values:
+ * <ul>
+ * <li>SHA1 (Default)</li>
+ * <li>SHA256</li>
+ * <li>SHA512</li>
+ * </ul>
+ * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#algorithm
+ */
+public enum Algorithm {
 
-import static org.junit.Assert.assertEquals;
+    SHA1("SHA1"),
+    SHA256("SHA256"),
+    SHA512("SHA512");
 
-public class DigitsTest {
+    private final String value;
 
-    @Test
-    public void should_have_the_correct_value() throws Exception {
-        assertEquals(6, Digits.SIX.value());
-        assertEquals(8, Digits.EIGHT.value());
-    }
+    Algorithm(final String value) {this.value = value;}
 
-    @Test
-    public void should_alert_if_new_enum_is_added() throws Exception {
-        assertEquals("A new enum has been added, don't forget to add new tests", 2, Digits.values().length);
+    public String value() {
+        return value;
     }
 }

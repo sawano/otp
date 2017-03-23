@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.keyuri;
+package se.sawano.java.security.otp.google.keyuri;
 
 import com.google.common.net.PercentEscaper;
 

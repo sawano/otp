@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.keyuri;
+package se.sawano.java.security.otp.google.keyuri;
 
-import se.sawano.java.security.otp.keyuri.parameters.Parameters;
+import se.sawano.java.security.otp.google.keyuri.parameters.Parameters;
 
 import static org.apache.commons.lang3.Validate.notNull;
 

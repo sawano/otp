@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.keyuri;
+package se.sawano.java.security.otp.google.keyuri.parameters;
 
-/**
- * Valid types are hotp and totp, to distinguish whether the key will be used for counter-based HOTP or for TOTP.
- *
- * <p>
- * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#types
- * </p>
- */
-public enum Type {
+import org.junit.Test;
 
-    HOTP,
+import static org.junit.Assert.assertEquals;
 
-    TOTP
+public class DigitsTest {
+
+    @Test
+    public void should_have_the_correct_value() throws Exception {
+        assertEquals(6, Digits.SIX.value());
+        assertEquals(8, Digits.EIGHT.value());
+    }
+
+    @Test
+    public void should_alert_if_new_enum_is_added() throws Exception {
+        assertEquals("A new enum has been added, don't forget to add new tests", 2, Digits.values().length);
+    }
 }

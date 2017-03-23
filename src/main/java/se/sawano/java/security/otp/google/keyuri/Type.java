@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.keyuri.parameters;
+package se.sawano.java.security.otp.google.keyuri;
 
 /**
- * OPTIONAL: The digits parameter may have the values 6 or 8, and determines how long of a one-time passcode to display to the user. The default is 6.
+ * Valid types are hotp and totp, to distinguish whether the key will be used for counter-based HOTP or for TOTP.
  *
  * <p>
- * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#digits
+ * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#types
  * </p>
  */
-public enum Digits {
+public enum Type {
 
-    SIX(6),
-    EIGHT(8);
+    HOTP,
 
-    private final int value;
-
-    Digits(final int value) {
-        this.value = value;
-    }
-
-    public int value() {
-        return value;
-    }
+    TOTP
 }
