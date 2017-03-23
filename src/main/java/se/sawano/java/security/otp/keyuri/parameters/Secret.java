@@ -16,11 +16,36 @@
 
 package se.sawano.java.security.otp.keyuri.parameters;
 
+import org.apache.commons.codec.binary.Base32;
+
+import static org.apache.commons.lang3.Validate.notNull;
+
 /**
  * REQUIRED: The secret parameter is an arbitrary key value encoded in Base32 according to RFC 3548.
  *
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#secret
  */
-// TODO implement
+// TODO test coverage
 public final class Secret {
+
+    public static final String BASE32_PADDING = "=";
+    private final String value;
+
+    public Secret(final byte[] value) {
+        notNull(value);
+
+        this.value = removePadding(base32Encode(value));
+    }
+
+    private static String base32Encode(final byte[] value) {
+        return new Base32(BASE32_PADDING.getBytes()[0]).encodeToString(value);
+    }
+
+    private static String removePadding(final String base32Value) {
+        return base32Value.replace(BASE32_PADDING, "");
+    }
+
+    public String value() {
+        return value;
+    }
 }

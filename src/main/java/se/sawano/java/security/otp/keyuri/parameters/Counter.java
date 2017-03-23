@@ -21,6 +21,15 @@ package se.sawano.java.security.otp.keyuri.parameters;
  *
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#counter
  */
-// TODO implement
 public final class Counter {
+
+    private final long value;
+
+    public Counter(final long value) {
+        this.value = value;
+    }
+
+    public long value() {
+        return value;
+    }
 }

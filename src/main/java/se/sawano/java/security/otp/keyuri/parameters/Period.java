@@ -16,10 +16,23 @@
 
 package se.sawano.java.security.otp.keyuri.parameters;
 
+import java.time.Duration;
+
 /**
  * OPTIONAL only if type is totp: The period parameter defines a period that a TOTP code will be valid for, in seconds. The default value is 30.
  *
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#period
  */
+// TODO implement
 public final class Period {
+
+    private final Duration value;
+
+    public Period(final Duration value) {
+        this.value = value;
+    }
+
+    public long value() {
+        return value.getSeconds();
+    }
 }

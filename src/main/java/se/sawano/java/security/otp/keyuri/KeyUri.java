@@ -16,38 +16,37 @@
 
 package se.sawano.java.security.otp.keyuri;
 
-import se.sawano.java.security.otp.keyuri.parameters.*;
+import se.sawano.java.security.otp.keyuri.parameters.Parameters;
 
-import java.util.Optional;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * otpauth://TYPE/LABEL?PARAMETERS
  *
- * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format.
+ * <p> See https://github.com/google/google-authenticator/wiki/Key-Uri-Format. </p>
+ *
+ * <p>
+ * Note: The issuer parameter is a string value indicating the provider or service this account is associated with,
+ * URL-encoded according to RFC 3986. If the issuer parameter is absent, issuer information may be taken from the issuer prefix of the label. If both issuer parameter and issuer label prefix are
+ * present, they should be equal.
+ * </p>
  */
+// TODO implement
 public final class KeyUri {
 
     private final Type type;
     private final Label label;
-    private final Secret secret;
-    private final Optional<Issuer> issuer;
-    private final Optional<Algorithm> algorithm;
-    private final Optional<Counter> counter;
-    private final Optional<Period> period;
+    private final Parameters parameters;
 
-    private KeyUri(final Type type,
-                   final Label label,
-                   final Secret secret,
-                   final Optional<Issuer> issuer,
-                   final Optional<Algorithm> algorithm,
-                   final Optional<Counter> counter,
-                   final Optional<Period> period) {
+    public KeyUri(final Type type, final Label label, final Parameters parameters) {
+        notNull(type);
+        notNull(label);
+        notNull(parameters);
+
         this.type = type;
         this.label = label;
-        this.secret = secret;
-        this.issuer = issuer;
-        this.algorithm = algorithm;
-        this.counter = counter;
-        this.period = period;
+        this.parameters = parameters;
+
+        parameters.validateFor(type);
     }
 }
