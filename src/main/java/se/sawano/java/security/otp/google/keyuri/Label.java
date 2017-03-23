@@ -16,8 +16,6 @@
 
 package se.sawano.java.security.otp.google.keyuri;
 
-import com.google.common.net.PercentEscaper;
-
 import java.util.Optional;
 
 import static org.apache.commons.lang3.Validate.*;
@@ -92,10 +90,9 @@ public final class Label {
         return issuer;
     }
 
-    public String value() {
+    public String asUriString() {
         final String value = accountName.value() + issuer.map(i -> ":" + i.value()).orElse("");
-        // TODO find another lib for escaping. Guava is a bit big for just this dependency.
-        return new PercentEscaper("-._~" + ".", false).escape(value);
+        return UriEncoder.encode(value);
     }
 
     /**

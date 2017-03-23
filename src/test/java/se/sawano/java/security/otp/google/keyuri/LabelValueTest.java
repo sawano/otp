@@ -71,9 +71,9 @@ public class LabelValueTest {
 
     private String getValue() {
         if (issuer == null) {
-            return new Label(accountName()).value();
+            return new Label(accountName()).asUriString();
         }
-        return new Label(accountName(), issuer()).value();
+        return new Label(accountName(), issuer()).asUriString();
     }
 
     private AccountName accountName() {
