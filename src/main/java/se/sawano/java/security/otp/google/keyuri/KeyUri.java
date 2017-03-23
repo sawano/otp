@@ -16,8 +16,12 @@
 
 package se.sawano.java.security.otp.google.keyuri;
 
+import se.sawano.java.security.otp.google.keyuri.parameters.Issuer;
 import se.sawano.java.security.otp.google.keyuri.parameters.Parameters;
 
+import java.util.function.Consumer;
+
+import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
@@ -47,6 +51,16 @@ public final class KeyUri {
         this.label = label;
         this.parameters = parameters;
 
-        parameters.validateFor(type);
+        validateIssuer();
+    }
+
+    private void validateIssuer() {
+        label.issuer()
+             .map(labelIssuer -> (Consumer<Issuer>) parameterIssuer -> verifyEqual(labelIssuer, parameterIssuer))
+             .ifPresent(issuerConsumer -> parameters.issuer().ifPresent(issuerConsumer));
+    }
+
+    private void verifyEqual(final Label.Issuer issuer, final Issuer parameterIssuer) {
+        isTrue(issuer.value().equals(parameterIssuer.value()), "Issuer must be same in Label and parameters");
     }
 }

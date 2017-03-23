@@ -24,6 +24,7 @@ import se.sawano.java.security.otp.google.keyuri.Type;
 import java.time.Duration;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
 
 public class ParametersTest {
 
@@ -31,65 +32,73 @@ public class ParametersTest {
     public ExpectedException expectation = ExpectedException.none();
 
     @Test
-    public void should_not_be_valid_if_type_is_HOTP_and_counter_is_missing() throws Exception {
-        final Parameters parameters = parametersWithoutCounter();
-
+    public void should_fail_creation_if_type_is_HOTP_and_counter_is_missing() throws Exception {
         expectation.expect(IllegalArgumentException.class);
         expectation.expectMessage(is("'Counter' is required for type HOTP"));
 
-        parameters.validateFor(Type.HOTP);
+        parametersWithoutCounter().createFor(Type.HOTP);
     }
 
     @Test
-    public void should_not_be_valid_if_type_is_HOTP_and_period_is_present() throws Exception {
-        final Parameters parameters = parametersWithPeriod();
-
+    public void should_fail_creation_if_type_is_HOTP_and_period_is_present() throws Exception {
         expectation.expect(IllegalArgumentException.class);
         expectation.expectMessage(is("'Period' is not allowed for type HOTP"));
 
-        parameters.validateFor(Type.HOTP);
+        parametersWithPeriod().createFor(Type.HOTP);
     }
 
     @Test
-    public void should_not_be_valid_if_type_is_TOTP_and_period_is_missing() throws Exception {
-        final Parameters parameters = parametersWithoutPeriod();
-
+    public void should_fail_creation_if_type_is_TOTP_and_period_is_missing() throws Exception {
         expectation.expect(IllegalArgumentException.class);
         expectation.expectMessage(is("'Period' is required for type TOTP"));
 
-        parameters.validateFor(Type.TOTP);
+        parametersWithoutPeriod().createFor(Type.TOTP);
     }
 
     @Test
-    public void should_not_be_valid_if_type_is_TOTP_and_counter_is_present() throws Exception {
-        final Parameters parameters = parametersWithCounter();
-
+    public void should_fail_creation_if_type_is_TOTP_and_counter_is_present() throws Exception {
         expectation.expect(IllegalArgumentException.class);
         expectation.expectMessage(is("'Counter' is not allowed for type TOTP"));
 
-        parameters.validateFor(Type.TOTP);
+        parametersWithCounter().createFor(Type.TOTP);
     }
 
-    private Parameters parametersWithPeriod() {
-        return completeBuilder()
-                .create();
+    @Test
+    public void should_create_for_TOTP() throws Exception {
+
+        assertNotNull(parametersForTotp().createFor(Type.TOTP));
     }
 
-    private Parameters parametersWithoutCounter() {
-        return completeBuilder()
-                .withCounter(null)
-                .create();
+    @Test
+    public void should_create_for_HOTP() throws Exception {
+
+        assertNotNull(parametersForHotp().createFor(Type.HOTP));
     }
 
-    private Parameters parametersWithCounter() {
-        return completeBuilder()
-                .create();
+    private Parameters.Builder parametersWithPeriod() {
+        return completeBuilder();
     }
 
-    private Parameters parametersWithoutPeriod() {
+    private Parameters.Builder parametersWithoutCounter() {
         return completeBuilder()
-                .withPeriod(null)
-                .create();
+                .withCounter(null);
+    }
+
+    private Parameters.Builder parametersWithCounter() {
+        return completeBuilder();
+    }
+
+    private Parameters.Builder parametersWithoutPeriod() {
+        return completeBuilder()
+                .withPeriod(null);
+    }
+
+    private Parameters.Builder parametersForTotp() {
+        return parametersWithPeriod().withCounter(null);
+    }
+
+    private Parameters.Builder parametersForHotp() {
+        return parametersWithCounter().withPeriod(null);
     }
 
     private Parameters.Builder completeBuilder() {

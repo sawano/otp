@@ -23,7 +23,7 @@ import java.util.Optional;
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
-public class Parameters {
+public final class Parameters {
 
     public static Builder builder() {
         return new Builder();
@@ -53,7 +53,7 @@ public class Parameters {
         this.period = period;
     }
 
-    public void validateFor(final Type type) {
+    private void validateFor(final Type type) {
         if (Type.HOTP.equals(type)) {
             validateForHOTP();
         }
@@ -75,7 +75,27 @@ public class Parameters {
         isTrue(!counter.isPresent(), "'Counter' is not allowed for type TOTP");
     }
 
-    public static class Builder {
+    public Secret secret() {
+        return secret;
+    }
+
+    public Optional<Issuer> issuer() {
+        return issuer;
+    }
+
+    public Optional<Algorithm> algorithm() {
+        return algorithm;
+    }
+
+    public Optional<Counter> counter() {
+        return counter;
+    }
+
+    public Optional<Period> period() {
+        return period;
+    }
+
+    public static final class Builder {
         private Secret secret;
         private Issuer issuer;
         private Algorithm algorithm;
@@ -107,8 +127,13 @@ public class Parameters {
             return this;
         }
 
-        public Parameters create() {
-            return new Parameters(secret, Optional.ofNullable(issuer), Optional.ofNullable(algorithm), Optional.ofNullable(counter), Optional.ofNullable(period));
+        public Parameters createFor(final Type type) {
+            notNull(type);
+
+            final Parameters parameters = new Parameters(secret, Optional.ofNullable(issuer), Optional.ofNullable(algorithm), Optional.ofNullable(counter), Optional.ofNullable(period));
+            parameters.validateFor(type);
+
+            return parameters;
         }
     }
 

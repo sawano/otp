@@ -34,6 +34,8 @@ public class IssuerTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {value("Example Co"), isOk()},
+                {value(":"), isOk()},
+                {value("My:Company"), isOk()},
                 {value(""), isNotOk()},
                 {value("   "), isNotOk()},
                 {value(StringUtils.repeat("a", Issuer.MAX_LENGTH - 1)), isOk()},
