@@ -32,7 +32,7 @@ public class TestDataHelper {
 
     @Test
     public void should_generate_new_secret() throws Exception {
-        final SharedSecret secret = new DefaultSecretService().generateSharedSecret(SHA256);
+        final SharedSecret secret = new DefaultSecretService().generateSharedSecret(SHA1);
 
         System.out.println(new Base32(false).encodeAsString(secret.value()));
 

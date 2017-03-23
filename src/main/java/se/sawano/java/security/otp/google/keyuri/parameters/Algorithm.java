@@ -25,7 +25,7 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
  * </ul>
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#algorithm
  */
-public enum Algorithm {
+public enum Algorithm implements Parameter {
 
     SHA1("SHA1"),
     SHA256("SHA256"),
@@ -37,5 +37,10 @@ public enum Algorithm {
 
     public String value() {
         return value;
+    }
+
+    @Override
+    public String parameterPair() {
+        return "algorithm=" + value;
     }
 }

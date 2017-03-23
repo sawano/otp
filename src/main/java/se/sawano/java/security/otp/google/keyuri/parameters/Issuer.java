@@ -16,6 +16,8 @@
 
 package se.sawano.java.security.otp.google.keyuri.parameters;
 
+import se.sawano.java.security.otp.google.keyuri.UriEncoder;
+
 import static org.apache.commons.lang3.Validate.inclusiveBetween;
 import static org.apache.commons.lang3.Validate.notBlank;
 
@@ -24,11 +26,11 @@ import static org.apache.commons.lang3.Validate.notBlank;
  *
  * <p> See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#issuer </p>
  *
- * <p> This is very similar to {@link se.sawano.java.security.otp.google.keyuri.Label.Issuer}. One difference is that this issuer may contain ':'. Also note that if the {@code Label.Issuer} is present, then
- * this issuer must be equal to the {@code Label.Issuer}. </p>
+ * <p> This is very similar to {@link se.sawano.java.security.otp.google.keyuri.Label.Issuer}. One difference is that this issuer may contain ':'. Also note that if the {@code Label.Issuer} is
+ * present, then this issuer must be equal to the {@code Label.Issuer}. </p>
  */
 // TODO implement
-public final class Issuer {
+public final class Issuer implements Parameter {
 
     /**
      * The max length of an issuer.
@@ -47,5 +49,11 @@ public final class Issuer {
 
     public String value() {
         return value;
+    }
+
+    @Override
+    public String parameterPair() {
+        // TODO add test for encoding
+        return "issuer=" + UriEncoder.encode(value);
     }
 }

@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#secret
  */
 // TODO test coverage
-public final class Secret {
+public final class Secret implements Parameter {
 
     public static final String BASE32_PADDING = "=";
     private final String value;
@@ -47,5 +47,10 @@ public final class Secret {
 
     public String value() {
         return value;
+    }
+
+    @Override
+    public String parameterPair() {
+        return "secret=" + value;
     }
 }

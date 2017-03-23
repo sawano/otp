@@ -16,10 +16,15 @@
 
 package se.sawano.java.security.otp.google.keyuri.parameters;
 
+import se.sawano.java.commons.lang.Optionals;
 import se.sawano.java.security.otp.google.keyuri.Type;
+import se.sawano.java.security.otp.google.keyuri.UriEncoder;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -73,6 +78,13 @@ public final class Parameters {
     private void validateForTOTP() {
         isTrue(period.isPresent(), "'Period' is required for type TOTP");
         isTrue(!counter.isPresent(), "'Counter' is not allowed for type TOTP");
+    }
+
+    public String asUriString() {
+        return Stream.of(of(secret), issuer, algorithm, counter, period)
+                     .flatMap(Optionals::stream)
+                     .map(Parameter::parameterPair)
+                     .collect(joining("&", "?", ""));
     }
 
     public Secret secret() {

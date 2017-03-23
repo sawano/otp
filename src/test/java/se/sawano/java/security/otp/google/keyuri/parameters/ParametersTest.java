@@ -19,11 +19,14 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import se.sawano.java.security.otp.ShaAlgorithm;
+import se.sawano.java.security.otp.SharedSecret;
 import se.sawano.java.security.otp.google.keyuri.Type;
 
 import java.time.Duration;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ParametersTest {
@@ -75,6 +78,13 @@ public class ParametersTest {
         assertNotNull(parametersForHotp().createFor(Type.HOTP));
     }
 
+    @Test
+    public void should_create_URI_encoded_string() throws Exception {
+        final Parameters parameters = parametersForTotp().createFor(Type.TOTP);
+
+        assertEquals("?secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P&issuer=Example%20Co&algorithm=SHA1&period=30", parameters.asUriString());
+    }
+
     private Parameters.Builder parametersWithPeriod() {
         return completeBuilder();
     }
@@ -103,10 +113,14 @@ public class ParametersTest {
 
     private Parameters.Builder completeBuilder() {
         return Parameters.builder()
-                         .withSecret(new Secret(new byte[]{}))
+                         .withSecret(secret())
                          .withAlgorithm(Algorithm.SHA1)
                          .withIssuer(new Issuer("Example Co"))
                          .withCounter(new Counter(0))
                          .withPeriod(new Period(Duration.ofSeconds(30)));
+    }
+
+    private Secret secret() {
+        return new Secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
     }
 }

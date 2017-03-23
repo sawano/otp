@@ -21,7 +21,7 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
  *
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#counter
  */
-public final class Counter {
+public final class Counter implements Parameter {
 
     private final long value;
 
@@ -31,5 +31,10 @@ public final class Counter {
 
     public long value() {
         return value;
+    }
+
+    @Override
+    public String parameterPair() {
+        return "counter=" + Long.toString(value);
     }
 }

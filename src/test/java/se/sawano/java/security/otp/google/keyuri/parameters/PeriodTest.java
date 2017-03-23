@@ -16,30 +16,20 @@
 
 package se.sawano.java.security.otp.google.keyuri.parameters;
 
-/**
- * OPTIONAL: The digits parameter may have the values 6 or 8, and determines how long of a one-time passcode to display to the user. The default is 6.
- *
- * <p>
- * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#digits
- * </p>
- */
-public enum Digits implements Parameter {
+import org.junit.Test;
 
-    SIX(6),
-    EIGHT(8);
+import java.time.Duration;
 
-    private final int value;
+import static org.junit.Assert.assertEquals;
 
-    Digits(final int value) {
-        this.value = value;
+public class PeriodTest {
+
+    @Test
+    public void should_return_value_in_seconds() throws Exception {
+        assertEquals(30, new Period(Duration.ofSeconds(30)).value());
+        assertEquals(60, new Period(Duration.ofMinutes(1)).value());
+        assertEquals(1, new Period(Duration.ofMillis(1_000)).value());
+
     }
 
-    public int value() {
-        return value;
-    }
-
-    @Override
-    public String parameterPair() {
-        return "digits=" + value;
-    }
 }

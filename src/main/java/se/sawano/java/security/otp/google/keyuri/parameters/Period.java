@@ -24,7 +24,7 @@ import java.time.Duration;
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#period
  */
 // TODO implement
-public final class Period {
+public final class Period implements Parameter {
 
     private final Duration value;
 
@@ -34,5 +34,10 @@ public final class Period {
 
     public long value() {
         return value.getSeconds();
+    }
+
+    @Override
+    public String parameterPair() {
+        return "period=" + value();
     }
 }
