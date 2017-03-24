@@ -38,20 +38,29 @@ public class SharedSecretByteVerificationTests {
                 {noOfBytes(1), andAlgorithm(SHA1), isNotOk()},
                 {noOfBytes(19), andAlgorithm(SHA1), isNotOk()},
                 {noOfBytes(20), andAlgorithm(SHA1), isOk()},
-                {noOfBytes(21), andAlgorithm(SHA1), isNotOk()},
-                {noOfBytes(5432), andAlgorithm(SHA1), isNotOk()},
+                {noOfBytes(21), andAlgorithm(SHA1), isOk()},
+                {noOfBytes(5432), andAlgorithm(SHA1), isOk()},
 
                 {noOfBytes(0), andAlgorithm(SHA256), isNotOk()},
-                {noOfBytes(31), andAlgorithm(SHA256), isNotOk()},
+                {noOfBytes(19), andAlgorithm(SHA256), isNotOk()},
+                {noOfBytes(20), andAlgorithm(SHA256), isOk()},
+                {noOfBytes(21), andAlgorithm(SHA256), isOk()},
+                {noOfBytes(31), andAlgorithm(SHA256), isOk()},
                 {noOfBytes(32), andAlgorithm(SHA256), isOk()},
-                {noOfBytes(33), andAlgorithm(SHA256), isNotOk()},
-                {noOfBytes(235), andAlgorithm(SHA256), isNotOk()},
+                {noOfBytes(33), andAlgorithm(SHA256), isOk()},
+                {noOfBytes(235), andAlgorithm(SHA256), isOk()},
 
                 {noOfBytes(3), andAlgorithm(SHA512), isNotOk()},
-                {noOfBytes(63), andAlgorithm(SHA512), isNotOk()},
+                {noOfBytes(19), andAlgorithm(SHA512), isNotOk()},
+                {noOfBytes(20), andAlgorithm(SHA512), isOk()},
+                {noOfBytes(21), andAlgorithm(SHA512), isOk()},
+                {noOfBytes(31), andAlgorithm(SHA512), isOk()},
+                {noOfBytes(32), andAlgorithm(SHA512), isOk()},
+                {noOfBytes(33), andAlgorithm(SHA512), isOk()},
+                {noOfBytes(63), andAlgorithm(SHA512), isOk()},
                 {noOfBytes(64), andAlgorithm(SHA512), isOk()},
-                {noOfBytes(65), andAlgorithm(SHA512), isNotOk()},
-                {noOfBytes(234), andAlgorithm(SHA512), isNotOk()},
+                {noOfBytes(65), andAlgorithm(SHA512), isOk()},
+                {noOfBytes(234), andAlgorithm(SHA512), isOk()},
                 });
 
     }
@@ -92,7 +101,7 @@ public class SharedSecretByteVerificationTests {
             SharedSecret.fromHex(createHexString(), algorithm);
             return true;
         } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().startsWith("Unexpected number of bytes."));
+            assertTrue(e.getMessage().startsWith("Minimum length of secret is"));
             return false;
         }
     }

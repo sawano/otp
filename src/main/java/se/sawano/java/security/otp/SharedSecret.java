@@ -26,12 +26,14 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
+/**
+ * RFC4226 requires a shared secret with minimum length of 128 bits. And recommends the secret to be at leas 160 bits (20 bytes). This class requires the secret to be at least 20 bytes.
+ */
 // TODO clean up factory methods
 public final class SharedSecret implements Externalizable {
 
@@ -73,13 +75,8 @@ public final class SharedSecret implements Externalizable {
         return new SharedSecret(bytes, algorithm);
     }
 
+    public static final int MINIMUM_NUMBER_OF_BYTES = 20;
     private static final Charset UTF_8 = Charset.forName("UTF8");
-    private static HashMap<ShaAlgorithm, Integer> ALGORITHM_TO_BYTES = new HashMap<>();
-    static {
-        ALGORITHM_TO_BYTES.put(ShaAlgorithm.SHA1, 20);
-        ALGORITHM_TO_BYTES.put(ShaAlgorithm.SHA256, 32);
-        ALGORITHM_TO_BYTES.put(ShaAlgorithm.SHA512, 64);
-    }
 
     private final byte[] value;
     private final ShaAlgorithm algorithm;
@@ -87,14 +84,10 @@ public final class SharedSecret implements Externalizable {
     private SharedSecret(final byte[] value, final ShaAlgorithm algorithm) {
         notNull(value);
         notNull(algorithm);
-        isTrue(value.length == expectedBytesFor(algorithm), "Unexpected number of bytes. Expected: %d, got %d", expectedBytesFor(algorithm), value.length);
+        isTrue(value.length >= MINIMUM_NUMBER_OF_BYTES, "Minimum length of secret is %d bytes", MINIMUM_NUMBER_OF_BYTES);
 
         this.value = value;
         this.algorithm = algorithm;
-    }
-
-    private static Integer expectedBytesFor(final ShaAlgorithm algorithm) {
-        return ALGORITHM_TO_BYTES.get(algorithm);
     }
 
     public byte[] value() {
