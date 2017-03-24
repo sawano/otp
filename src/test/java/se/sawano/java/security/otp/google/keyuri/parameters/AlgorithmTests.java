@@ -18,18 +18,19 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
 
 import org.junit.Test;
 
-import java.time.Duration;
-
 import static org.junit.Assert.assertEquals;
 
-public class PeriodTest {
+public class AlgorithmTests {
 
     @Test
-    public void should_return_value_in_seconds() throws Exception {
-        assertEquals(30, new Period(Duration.ofSeconds(30)).value());
-        assertEquals(60, new Period(Duration.ofMinutes(1)).value());
-        assertEquals(1, new Period(Duration.ofMillis(1_000)).value());
-
+    public void should_have_google_compliant_code() throws Exception {
+        assertEquals("SHA1", Algorithm.SHA1.value());
+        assertEquals("SHA256", Algorithm.SHA256.value());
+        assertEquals("SHA512", Algorithm.SHA512.value());
     }
 
+    @Test
+    public void should_alert_if_new_enum_is_added() throws Exception {
+        assertEquals("A new enum has been added, don't forget to add new tests", 3, Algorithm.values().length);
+    }
 }

@@ -28,7 +28,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class IssuerTest {
+public class IssuerCreationTests {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {

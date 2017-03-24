@@ -25,7 +25,7 @@ import java.time.Duration;
 
 import static org.hamcrest.core.Is.is;
 
-public class KeyUriTest {
+public class KeyUriTests {
 
     @Rule
     public ExpectedException expectation = ExpectedException.none();

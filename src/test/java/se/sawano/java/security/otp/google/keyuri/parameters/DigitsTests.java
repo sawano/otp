@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.google.keyuri;
+package se.sawano.java.security.otp.google.keyuri.parameters;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TypeTest {
+public class DigitsTests {
 
     @Test
-    public void should_have_google_compliant_code() throws Exception {
-        assertEquals("totp", Type.TOTP.value());
-        assertEquals("hotp", Type.HOTP.value());
+    public void should_have_the_correct_value() throws Exception {
+        assertEquals(6, Digits.SIX.value());
+        assertEquals(8, Digits.EIGHT.value());
     }
 
     @Test
     public void should_alert_if_new_enum_is_added() throws Exception {
-        assertEquals("A new enum has been added, don't forget to add new tests", 2, Type.values().length);
+        assertEquals("A new enum has been added, don't forget to add new tests", 2, Digits.values().length);
     }
 }

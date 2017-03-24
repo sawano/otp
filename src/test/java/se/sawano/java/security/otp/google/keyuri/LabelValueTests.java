@@ -28,7 +28,7 @@ import java.util.Collection;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class LabelValueTest {
+public class LabelValueTests {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {

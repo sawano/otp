@@ -20,17 +20,19 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class AlgorithmTest {
+public class SecretTests {
 
     @Test
-    public void should_have_google_compliant_code() throws Exception {
-        assertEquals("SHA1", Algorithm.SHA1.value());
-        assertEquals("SHA256", Algorithm.SHA256.value());
-        assertEquals("SHA512", Algorithm.SHA512.value());
+    public void should_base32_encode_value() throws Exception {
+        assertEquals("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", secret("12345678901234567890").value());
     }
 
     @Test
-    public void should_alert_if_new_enum_is_added() throws Exception {
-        assertEquals("A new enum has been added, don't forget to add new tests", 3, Algorithm.values().length);
+    public void should_trim_padding_from_value() throws Exception {
+        assertEquals("GEZDGNBVGY", secret("123456").value());
+    }
+
+    private Secret secret(final String value) {
+        return new Secret(value.getBytes());
     }
 }

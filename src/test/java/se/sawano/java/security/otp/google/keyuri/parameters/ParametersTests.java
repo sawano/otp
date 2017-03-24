@@ -34,7 +34,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ParametersTest {
+public class ParametersTests {
 
     @Rule
     public ExpectedException expectation = ExpectedException.none();

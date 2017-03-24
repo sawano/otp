@@ -18,21 +18,18 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
 
 import org.junit.Test;
 
+import java.time.Duration;
+
 import static org.junit.Assert.assertEquals;
 
-public class SecretTest {
+public class PeriodTests {
 
     @Test
-    public void should_base32_encode_value() throws Exception {
-        assertEquals("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", secret("12345678901234567890").value());
+    public void should_return_value_in_seconds() throws Exception {
+        assertEquals(30, new Period(Duration.ofSeconds(30)).value());
+        assertEquals(60, new Period(Duration.ofMinutes(1)).value());
+        assertEquals(1, new Period(Duration.ofMillis(1_000)).value());
+
     }
 
-    @Test
-    public void should_trim_padding_from_value() throws Exception {
-        assertEquals("GEZDGNBVGY", secret("123456").value());
-    }
-
-    private Secret secret(final String value) {
-        return new Secret(value.getBytes());
-    }
 }

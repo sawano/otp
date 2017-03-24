@@ -23,7 +23,7 @@ import se.sawano.java.security.otp.SharedSecret;
 import static org.junit.Assert.assertEquals;
 import static se.sawano.java.security.otp.ShaAlgorithm.*;
 
-public class DefaultSecretServiceTest {
+public class DefaultSecretServiceTests {
 
     public static final String ASCII_SECRET_FROM_RFC6238 = "12345678901234567890";
     public static final String EXPECTED_SHA1_HEX_SECRET_FROM_RFC_6238_EXAMPLE = "3132333435363738393031323334353637383930";
