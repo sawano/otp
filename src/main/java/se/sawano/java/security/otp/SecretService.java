@@ -16,7 +16,6 @@
 
 package se.sawano.java.security.otp;
 
-// TODO not finished
 public interface SecretService {
 
     /**
