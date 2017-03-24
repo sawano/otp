@@ -87,7 +87,7 @@ public class ParametersTests {
     public void should_create_URI_encoded_string() throws Exception {
         final Parameters parameters = parametersForTotp().createFor(Type.TOTP);
 
-        assertEquals("?secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P&issuer=Example%20Co&algorithm=SHA1&period=30", parameters.asUriString());
+        assertEquals("?secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P&issuer=Example%20Co&algorithm=SHA1&digits=6&period=30", parameters.asUriString());
     }
 
     @Test
@@ -127,7 +127,7 @@ public class ParametersTests {
     }
 
     private Parameters.Builder parametersForTotp() {
-        return parametersWithPeriod().withCounter(null);
+        return completeBuilder().withCounter(null);
     }
 
     private Parameters.Builder parametersForHotp() {
@@ -140,6 +140,7 @@ public class ParametersTests {
                          .withAlgorithm(algorithm())
                          .withIssuer(issuer())
                          .withCounter(counter())
+                         .withDigits(Digits.SIX)
                          .withPeriod(period());
     }
 

@@ -19,6 +19,7 @@ package se.sawano.java.security.otp.google.keyuri;
 import se.sawano.java.security.otp.google.keyuri.parameters.Issuer;
 import se.sawano.java.security.otp.google.keyuri.parameters.Parameters;
 
+import java.net.URI;
 import java.util.function.Consumer;
 
 import static org.apache.commons.lang3.Validate.isTrue;
@@ -35,7 +36,6 @@ import static org.apache.commons.lang3.Validate.notNull;
  * present, they should be equal.
  * </p>
  */
-// TODO implement
 public final class KeyUri {
 
     private final Type type;
@@ -52,6 +52,11 @@ public final class KeyUri {
         this.parameters = parameters;
 
         validateIssuer();
+        validateParameters();
+    }
+
+    public URI toURI() {
+        return URI.create("otpauth://" + type.value() + "/" + label.asUriString() + parameters.asUriString());
     }
 
     private void validateIssuer() {
@@ -62,5 +67,13 @@ public final class KeyUri {
 
     private void verifyEqual(final Label.Issuer issuer, final Issuer parameterIssuer) {
         isTrue(issuer.value().equals(parameterIssuer.value()), "Issuer must be same in Label and parameters");
+    }
+
+    private void validateParameters() {
+        try {
+            parameters.validateFor(type);
+        } catch (final IllegalArgumentException e) {
+            throw new IllegalArgumentException("Parameters is not valid for type: " + type, e);
+        }
     }
 }

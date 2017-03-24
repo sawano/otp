@@ -51,7 +51,7 @@ public final class Parameters {
         return parameters.stream().collect(toMap(k -> k.getClass(), k -> k));
     }
 
-    private void validateFor(final Type type) {
+    public void validateFor(final Type type) {
         if (Type.HOTP.equals(type)) {
             validateForHOTP();
         }
@@ -74,7 +74,7 @@ public final class Parameters {
     }
 
     public String asUriString() {
-        return Stream.of(of(secret), issuer(), algorithm(), counter(), period())
+        return Stream.of(of(secret), issuer(), algorithm(), digits(), counter(), period())
                      .flatMap(Optionals::stream)
                      .map(Parameter::parameterPair)
                      .collect(joining("&", "?", ""));
@@ -100,26 +100,21 @@ public final class Parameters {
         return get(Period.class);
     }
 
+    public Optional<Digits> digits() {
+        return get(Digits.class);
+    }
+
     private <T extends Parameter> Optional<T> get(final Class<T> clazz) {
         return Optional.ofNullable(parameters.get(clazz)).map(clazz::cast);
     }
 
     public static final class Builder {
-        private Secret secret;
-        private Issuer issuer;
         private Algorithm algorithm;
         private Counter counter;
+        private Digits digits;
+        private Issuer issuer;
         private Period period;
-
-        public Builder withSecret(final Secret secret) {
-            this.secret = secret;
-            return this;
-        }
-
-        public Builder withIssuer(final Issuer issuer) {
-            this.issuer = issuer;
-            return this;
-        }
+        private Secret secret;
 
         public Builder withAlgorithm(final Algorithm algorithm) {
             this.algorithm = algorithm;
@@ -131,15 +126,30 @@ public final class Parameters {
             return this;
         }
 
+        public Builder withDigits(final Digits digits) {
+            this.digits = digits;
+            return this;
+        }
+
+        public Builder withIssuer(final Issuer issuer) {
+            this.issuer = issuer;
+            return this;
+        }
+
         public Builder withPeriod(final Period period) {
             this.period = period;
+            return this;
+        }
+
+        public Builder withSecret(final Secret secret) {
+            this.secret = secret;
             return this;
         }
 
         public Parameters createFor(final Type type) {
             notNull(type);
 
-            final List<Parameter> optionalParameters = Stream.of(secret, issuer, algorithm, counter, period)
+            final List<Parameter> optionalParameters = Stream.of(algorithm, counter, digits, issuer, period, secret)
                                                              .filter(Objects::nonNull)
                                                              .collect(toList());
 
