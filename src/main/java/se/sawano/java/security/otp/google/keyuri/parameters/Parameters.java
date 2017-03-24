@@ -18,15 +18,16 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
 
 import se.sawano.java.commons.lang.Optionals;
 import se.sawano.java.security.otp.google.keyuri.Type;
-import se.sawano.java.security.otp.google.keyuri.UriEncoder;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.Optional.of;
-import static java.util.stream.Collectors.joining;
-import static org.apache.commons.lang3.Validate.isTrue;
-import static org.apache.commons.lang3.Validate.notNull;
+import static java.util.stream.Collectors.*;
+import static org.apache.commons.lang3.Validate.*;
 
 public final class Parameters {
 
@@ -35,27 +36,19 @@ public final class Parameters {
     }
 
     private final Secret secret;
-    private final Optional<Issuer> issuer;
-    private final Optional<Algorithm> algorithm;
-    private final Optional<Counter> counter;
-    private final Optional<Period> period;
+    private final Map<Class<? extends Parameter>, ? extends Parameter> parameters;
 
     private Parameters(final Secret secret,
-                       final Optional<Issuer> issuer,
-                       final Optional<Algorithm> algorithm,
-                       final Optional<Counter> counter,
-                       final Optional<Period> period) {
+                       final List<? extends Parameter> parameters) {
         notNull(secret);
-        notNull(issuer);
-        notNull(algorithm);
-        notNull(counter);
-        notNull(period);
+        noNullElements(parameters);
 
         this.secret = secret;
-        this.issuer = issuer;
-        this.algorithm = algorithm;
-        this.counter = counter;
-        this.period = period;
+        this.parameters = toMapAndFailOnDuplicates(parameters);
+    }
+
+    private static Map<Class<? extends Parameter>, Parameter> toMapAndFailOnDuplicates(final List<? extends Parameter> parameters) {
+        return parameters.stream().collect(toMap(k -> k.getClass(), k -> k));
     }
 
     private void validateFor(final Type type) {
@@ -71,17 +64,17 @@ public final class Parameters {
     }
 
     private void validateForHOTP() {
-        isTrue(counter.isPresent(), "'Counter' is required for type HOTP");
-        isTrue(!period.isPresent(), "'Period' is not allowed for type HOTP");
+        isTrue(get(Counter.class).isPresent(), "'Counter' is required for type HOTP");
+        isTrue(!get(Period.class).isPresent(), "'Period' is not allowed for type HOTP");
     }
 
     private void validateForTOTP() {
-        isTrue(period.isPresent(), "'Period' is required for type TOTP");
-        isTrue(!counter.isPresent(), "'Counter' is not allowed for type TOTP");
+        isTrue(get(Period.class).isPresent(), "'Period' is required for type TOTP");
+        isTrue(!get(Counter.class).isPresent(), "'Counter' is not allowed for type TOTP");
     }
 
     public String asUriString() {
-        return Stream.of(of(secret), issuer, algorithm, counter, period)
+        return Stream.of(of(secret), issuer(), algorithm(), counter(), period())
                      .flatMap(Optionals::stream)
                      .map(Parameter::parameterPair)
                      .collect(joining("&", "?", ""));
@@ -92,19 +85,23 @@ public final class Parameters {
     }
 
     public Optional<Issuer> issuer() {
-        return issuer;
+        return get(Issuer.class);
     }
 
     public Optional<Algorithm> algorithm() {
-        return algorithm;
+        return get(Algorithm.class);
     }
 
     public Optional<Counter> counter() {
-        return counter;
+        return get(Counter.class);
     }
 
     public Optional<Period> period() {
-        return period;
+        return get(Period.class);
+    }
+
+    private <T extends Parameter> Optional<T> get(final Class<T> clazz) {
+        return Optional.ofNullable(parameters.get(clazz)).map(clazz::cast);
     }
 
     public static final class Builder {
@@ -142,7 +139,11 @@ public final class Parameters {
         public Parameters createFor(final Type type) {
             notNull(type);
 
-            final Parameters parameters = new Parameters(secret, Optional.ofNullable(issuer), Optional.ofNullable(algorithm), Optional.ofNullable(counter), Optional.ofNullable(period));
+            final List<Parameter> optionalParameters = Stream.of(secret, issuer, algorithm, counter, period)
+                                                             .filter(Objects::nonNull)
+                                                             .collect(toList());
+
+            final Parameters parameters = new Parameters(secret, optionalParameters);
             parameters.validateFor(type);
 
             return parameters;

@@ -23,8 +23,13 @@ import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
 import se.sawano.java.security.otp.google.keyuri.Type;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
+import java.util.List;
 
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -85,6 +90,24 @@ public class ParametersTest {
         assertEquals("?secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P&issuer=Example%20Co&algorithm=SHA1&period=30", parameters.asUriString());
     }
 
+    @Test
+    public void should_fail_on_duplicate_parameter_type() throws Exception {
+        expectation.expect(IllegalStateException.class);
+        expectation.expectMessage(startsWith("Duplicate key"));
+
+        tryCreateWIthDuplicateParameterType();
+    }
+
+    private void tryCreateWIthDuplicateParameterType() throws Exception {
+        final Constructor<?> constructor = Parameters.class.getDeclaredConstructor(Secret.class, List.class);
+        constructor.setAccessible(true);
+        try {
+            constructor.newInstance(secret(), asList(algorithm(), issuer(), period(), period()));
+        } catch (final InvocationTargetException e) {
+            throw (Exception) e.getCause();
+        }
+    }
+
     private Parameters.Builder parametersWithPeriod() {
         return completeBuilder();
     }
@@ -114,13 +137,29 @@ public class ParametersTest {
     private Parameters.Builder completeBuilder() {
         return Parameters.builder()
                          .withSecret(secret())
-                         .withAlgorithm(Algorithm.SHA1)
-                         .withIssuer(new Issuer("Example Co"))
-                         .withCounter(new Counter(0))
-                         .withPeriod(new Period(Duration.ofSeconds(30)));
+                         .withAlgorithm(algorithm())
+                         .withIssuer(issuer())
+                         .withCounter(counter())
+                         .withPeriod(period());
     }
 
     private Secret secret() {
         return new Secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
+    }
+
+    private Algorithm algorithm() {
+        return Algorithm.SHA1;
+    }
+
+    private Issuer issuer() {
+        return new Issuer("Example Co");
+    }
+
+    private Counter counter() {
+        return new Counter(0);
+    }
+
+    private Period period() {
+        return new Period(Duration.ofSeconds(30));
     }
 }
