@@ -18,6 +18,11 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
 
 import org.apache.commons.codec.binary.Base32;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
@@ -25,8 +30,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  *
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#secret
  */
-// TODO test coverage
-public final class Secret implements Parameter {
+public final class Secret implements Parameter, Externalizable {
 
     public static final String BASE32_PADDING = "=";
     private final String value;
@@ -52,5 +56,19 @@ public final class Secret implements Parameter {
     @Override
     public String parameterPair() {
         return "secret=" + value;
+    }
+
+    @Override
+    public void writeExternal(final ObjectOutput out) throws IOException {
+        deny();
+    }
+
+    @Override
+    public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
+        deny();
+    }
+
+    private static void deny() {
+        throw new UnsupportedOperationException("Not allowed");
     }
 }

@@ -41,7 +41,7 @@ public class IssuerCreationTests {
                 {value(StringUtils.repeat("a", Issuer.MAX_LENGTH - 1)), isOk()},
                 {value(StringUtils.repeat("a", Issuer.MAX_LENGTH)), isOk()},
                 {value(StringUtils.repeat("a", Issuer.MAX_LENGTH + 1)), isNotOk()}
-                });
+        });
 
     }
 

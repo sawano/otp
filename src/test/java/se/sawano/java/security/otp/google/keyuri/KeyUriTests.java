@@ -25,6 +25,7 @@ import java.time.Duration;
 
 import static org.hamcrest.core.Is.is;
 
+// TODO more tests
 public class KeyUriTests {
 
     @Rule
@@ -40,7 +41,6 @@ public class KeyUriTests {
         expectation.expectMessage(is("Issuer must be same in Label and parameters"));
 
         new KeyUri(Type.TOTP, new Label(accountName(), issuer(issuer1)), totpParametersWithIssuer(issuer2));
-
     }
 
     @Test
@@ -49,7 +49,6 @@ public class KeyUriTests {
         final String issuer = "My Service";
 
         new KeyUri(Type.TOTP, new Label(accountName(), issuer(issuer)), totpParametersWithIssuer(issuer));
-
     }
 
     private Parameters totpParametersWithIssuer(final String issuer) {

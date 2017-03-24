@@ -29,7 +29,6 @@ import static org.apache.commons.lang3.Validate.notBlank;
  * <p> This is very similar to {@link se.sawano.java.security.otp.google.keyuri.Label.Issuer}. One difference is that this issuer may contain ':'. Also note that if the {@code Label.Issuer} is
  * present, then this issuer must be equal to the {@code Label.Issuer}. </p>
  */
-// TODO implement
 public final class Issuer implements Parameter {
 
     /**
@@ -53,7 +52,6 @@ public final class Issuer implements Parameter {
 
     @Override
     public String parameterPair() {
-        // TODO add test for encoding
         return "issuer=" + UriEncoder.encode(value);
     }
 }

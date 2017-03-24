@@ -29,7 +29,12 @@ public class PeriodTests {
         assertEquals(30, new Period(Duration.ofSeconds(30)).value());
         assertEquals(60, new Period(Duration.ofMinutes(1)).value());
         assertEquals(1, new Period(Duration.ofMillis(1_000)).value());
-
     }
 
+    @Test
+    public void should_have_seconds_as_parameter_value() throws Exception {
+        final String pair = new Period(Duration.ofSeconds(30)).parameterPair();
+
+        assertEquals("period=30", pair);
+    }
 }
