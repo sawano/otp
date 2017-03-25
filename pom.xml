@@ -25,7 +25,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <name>otp</name>
-    <description>Java libraries for OTP functionality</description>
+    <description>Java library for One-Time Passwords (OTP)</description>
     <url>https://github.com/sawano/otp</url>
     <licenses>
         <license>
