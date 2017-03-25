@@ -59,6 +59,18 @@ public final class KeyUri {
         return URI.create("otpauth://" + type.value() + "/" + label.asUriString() + parameters.asUriString());
     }
 
+    public Type type() {
+        return type;
+    }
+
+    public Label label() {
+        return label;
+    }
+
+    public Parameters parameters() {
+        return parameters;
+    }
+
     private void validateIssuer() {
         label.issuer()
              .map(labelIssuer -> (Consumer<Issuer>) parameterIssuer -> verifyEqual(labelIssuer, parameterIssuer))
