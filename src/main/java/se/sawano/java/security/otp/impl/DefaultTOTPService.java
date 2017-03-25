@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 import static org.apache.commons.lang3.Validate.notNull;
+import static se.sawano.java.security.otp.TOTP.totp;
 
 public class DefaultTOTPService implements TOTPService {
 
@@ -101,7 +102,7 @@ public class DefaultTOTPService implements TOTPService {
 
         final int totp = binary % DIGITS_POWER_OF_10.get(length);
 
-        return new TOTP(totp, length);
+        return totp(totp, length);
     }
 
     private static BiFunction<SharedSecret, byte[], byte[]> getHmacFunction(final ShaAlgorithm shaAlgorithm) {

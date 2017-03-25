@@ -70,6 +70,6 @@ public class TOTPTests {
     }
 
     private TOTP totp(final int value, final TOTP.Length length) {
-        return new TOTP(value, length);
+        return TOTP.totp(value, length);
     }
 }

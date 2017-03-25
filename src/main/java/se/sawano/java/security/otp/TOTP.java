@@ -26,6 +26,10 @@ import java.io.ObjectOutput;
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
+/**
+ * Representation of a TOTP. This class will throw an {@link UnsupportedOperationException} if serialized in order to prevent accidental serialization of the TOTP code. Encapsulate the TOTP object in
+ * another class  if the TOTP code needs to be serialized.
+ */
 public final class TOTP implements Externalizable {
 
     public enum Length {
@@ -51,10 +55,31 @@ public final class TOTP implements Externalizable {
 
     }
 
+    /**
+     * Creates a new TOTP using the given code. The TOTP code will be left padded with zeros (0) if it's shorter than the provided length.
+     *
+     * <p>
+     * Example: To create a TOTP of value {@code 046372} you would do:
+     * </p>
+     * <pre>
+     * TOTP totp = TOTP.totp(46372, Length.SIX);
+     * </pre>
+     *
+     * @param code
+     *         the integer value of the code
+     * @param length
+     *         the length of the TOTP code
+     *
+     * @return the newly created TOTP
+     */
+    public static TOTP totp(final int code, final Length length) {
+        return new TOTP(code, length);
+    }
+
     private final String value;
     private final Length length;
 
-    public TOTP(final int value, final Length length) {
+    private TOTP(final int value, final Length length) {
         notNull(length);
         isTrue(value >= 0, "Value cannot be negative");
 
