@@ -27,7 +27,6 @@ import static org.apache.commons.lang3.Validate.*;
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#label
  * </p>
  */
-// TODO test coverage
 public final class Label {
 
     private final AccountName accountName;
