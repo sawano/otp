@@ -26,6 +26,8 @@ import java.time.Duration;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.google.keyuri.Label.AccountName.accountName;
+import static se.sawano.java.security.otp.google.keyuri.Label.Issuer.issuer;
 
 // TODO more tests
 public class KeyUriTests {
@@ -42,7 +44,7 @@ public class KeyUriTests {
         expectation.expect(IllegalArgumentException.class);
         expectation.expectMessage(is("Issuer must be same in Label and parameters"));
 
-        new KeyUri(Type.TOTP, new Label(accountName(), issuer(issuer1)), totpParametersWithIssuer(issuer2));
+        new KeyUri(Type.TOTP, new Label(accountName("jane.doe"), issuer(issuer1)), totpParametersWithIssuer(issuer2));
     }
 
     @Test
@@ -50,7 +52,7 @@ public class KeyUriTests {
 
         final String issuer = "My Service";
 
-        new KeyUri(Type.TOTP, new Label(accountName(), issuer(issuer)), totpParametersWithIssuer(issuer));
+        new KeyUri(Type.TOTP, new Label(accountName("jane.doe"), issuer(issuer)), totpParametersWithIssuer(issuer));
     }
 
     @Test
@@ -58,7 +60,7 @@ public class KeyUriTests {
         final Parameters parameters = totpParametersWithIssuer("My Co");
 
         final URI uri = new KeyUri(Type.TOTP,
-                                   new Label(new Label.AccountName("john.doe@example.com"), new Label.Issuer("My Co")),
+                                   new Label(accountName("john.doe@example.com"), issuer("My Co")),
                                    parameters).toURI();
 
         assertEquals("otpauth://totp/john.doe%40example.com%3AMy%20Co?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=My%20Co&algorithm=SHA1&digits=6&period=30", uri.toString());
@@ -69,7 +71,7 @@ public class KeyUriTests {
         final Parameters parameters = hotpParametersWithIssuer("My Co");
 
         final URI uri = new KeyUri(Type.HOTP,
-                                   new Label(new Label.AccountName("john.doe@example.com"), new Label.Issuer("My Co")),
+                                   new Label(accountName("john.doe@example.com"), issuer("My Co")),
                                    parameters).toURI();
 
         assertEquals("otpauth://hotp/john.doe%40example.com%3AMy%20Co?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=My%20Co&algorithm=SHA1&digits=6&counter=42", uri.toString());
@@ -82,7 +84,7 @@ public class KeyUriTests {
 
         final Parameters parameters = hotpParametersWithIssuer("My Co");
         new KeyUri(Type.TOTP,
-                   new Label(new Label.AccountName("john.doe@example.com"), new Label.Issuer("My Co")),
+                   new Label(accountName("john.doe@example.com"), issuer("My Co")),
                    parameters).toURI();
     }
 
@@ -93,7 +95,7 @@ public class KeyUriTests {
 
         final Parameters parameters = totpParametersWithIssuer("My Co");
         new KeyUri(Type.HOTP,
-                   new Label(new Label.AccountName("john.doe@example.com"), new Label.Issuer("My Co")),
+                   new Label(accountName("john.doe@example.com"), issuer("My Co")),
                    parameters).toURI();
     }
 
@@ -117,11 +119,4 @@ public class KeyUriTests {
                          .createFor(Type.HOTP);
     }
 
-    private Label.Issuer issuer(final String issuer1) {
-        return new Label.Issuer(issuer1);
-    }
-
-    private Label.AccountName accountName() {
-        return new Label.AccountName("jane.doe");
-    }
 }

@@ -73,10 +73,13 @@ public class DefaultSecretServiceTests {
     }
 
     private void whenGeneratingSecret() {
-        final String s = (ASCII_SECRET_FROM_RFC6238 + ASCII_SECRET_FROM_RFC6238 + ASCII_SECRET_FROM_RFC6238 + ASCII_SECRET_FROM_RFC6238);
-        final RandomSupplier randomSupplier = bytes -> System.arraycopy(s.getBytes(), 0, bytes, 0, bytes.length);
-        final DefaultSecretService secretService = new DefaultSecretService(randomSupplier);
+        final DefaultSecretService secretService = new DefaultSecretService(fakeRandomSupplier());
         secret = secretService.generateSharedSecret(algorithm);
+    }
+
+    private RandomSupplier fakeRandomSupplier() {
+        final String s = (ASCII_SECRET_FROM_RFC6238 + ASCII_SECRET_FROM_RFC6238 + ASCII_SECRET_FROM_RFC6238 + ASCII_SECRET_FROM_RFC6238);
+        return bytes -> System.arraycopy(s.getBytes(), 0, bytes, 0, bytes.length);
     }
 
     private void thenSecretShouldHaveCorrectAlgorithm() {

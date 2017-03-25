@@ -19,13 +19,13 @@ package se.sawano.java.security.otp.google.keyuri;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import se.sawano.java.security.otp.google.keyuri.Label.AccountName;
-import se.sawano.java.security.otp.google.keyuri.Label.Issuer;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.google.keyuri.Label.AccountName.accountName;
+import static se.sawano.java.security.otp.google.keyuri.Label.Issuer.issuer;
 
 @RunWith(Parameterized.class)
 public class LabelValueTests {
@@ -71,16 +71,9 @@ public class LabelValueTests {
 
     private String getValue() {
         if (issuer == null) {
-            return new Label(accountName()).asUriString();
+            return new Label(accountName(accountName)).asUriString();
         }
-        return new Label(accountName(), issuer()).asUriString();
+        return new Label(accountName(accountName), issuer(issuer)).asUriString();
     }
 
-    private AccountName accountName() {
-        return new AccountName(accountName);
-    }
-
-    private Issuer issuer() {
-        return new Issuer(issuer);
-    }
 }

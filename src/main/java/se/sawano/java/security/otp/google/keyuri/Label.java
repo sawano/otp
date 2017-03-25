@@ -100,6 +100,10 @@ public final class Label {
      */
     public static final class AccountName {
 
+        public static AccountName accountName(final String value) {
+            return new AccountName(value);
+        }
+
         /**
          * The max length of an axccount name.
          */
@@ -107,7 +111,7 @@ public final class Label {
 
         private final String value;
 
-        public AccountName(final String value) {
+        private AccountName(final String value) {
             notBlank(value);
             final String trimmed = value.trim();
             inclusiveBetween(0, MAX_LENGTH, trimmed.length(), "Maximum length of account name is %d", MAX_LENGTH);
@@ -126,6 +130,10 @@ public final class Label {
      */
     public static final class Issuer {
 
+        public static Issuer issuer(final String value) {
+            return new Issuer(value);
+        }
+
         /**
          * The max length of an issuer.
          */
@@ -133,7 +141,7 @@ public final class Label {
 
         private final String value;
 
-        public Issuer(final String value) {
+        private Issuer(final String value) {
             notBlank(value);
             final String trimmed = value.trim();
             inclusiveBetween(0, MAX_LENGTH, trimmed.length(), "Maximum length of issuer is %d", MAX_LENGTH);
