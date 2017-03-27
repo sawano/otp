@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import static se.sawano.java.commons.lang.validate.Validate.notNull;
 
+// TODO refactor
 public class KeyUriFactory {
 
     private static final Map<ShaAlgorithm, Algorithm> ALGORITHM_MAP = new HashMap<>();
