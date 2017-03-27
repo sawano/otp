@@ -48,10 +48,14 @@ public class KeyUriFactory {
         notNull(accountName);
         notNull(issuer);
 
-        final Parameters parameters = builder(secret, digits, issuer).withPeriod(period)
-                                                                     .createFor(Type.TOTP);
+        final TOTPParameters parameters = ParametersBuilder.totpBuilder().withSecret(new Secret(secret.value()))
+                                                           .withAlgorithm(convert(secret.algorithm()))
+                                                           .withIssuer(new Issuer(issuer.value()))
+                                                           .withDigits(digits)
+                                                           .withPeriod(period)
+                                                           .create();
 
-        return new KeyUri(Type.TOTP, new Label(accountName, issuer), parameters);
+        return new KeyUri(new Label(accountName, issuer), parameters);
     }
 
     public static KeyUri hotpKeyUriFrom(final SharedSecret secret,
@@ -65,18 +69,14 @@ public class KeyUriFactory {
         notNull(accountName);
         notNull(issuer);
 
-        final Parameters parameters = builder(secret, digits, issuer).withCounter(counter)
-                                                                     .createFor(Type.HOTP);
+        final HOTPParameters parameters = ParametersBuilder.hotpBuilder().withSecret(new Secret(secret.value()))
+                                                           .withAlgorithm(convert(secret.algorithm()))
+                                                           .withIssuer(new Issuer(issuer.value()))
+                                                           .withDigits(digits)
+                                                           .withCounter(counter)
+                                                           .create();
 
-        return new KeyUri(Type.HOTP, new Label(accountName, issuer), parameters);
-    }
-
-    private static Parameters.Builder builder(final SharedSecret secret, final Digits digits, final Label.Issuer issuer) {
-        return Parameters.builder()
-                         .withDigits(digits)
-                         .withIssuer(new Issuer(issuer.value()))
-                         .withSecret(new Secret(secret.value()))
-                         .withAlgorithm(convert(secret.algorithm()));
+        return new KeyUri(new Label(accountName, issuer), parameters);
     }
 
     private static Algorithm convert(final ShaAlgorithm algorithm) {

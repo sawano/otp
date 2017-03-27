@@ -44,7 +44,7 @@ public class KeyUriTests {
         expectation.expect(IllegalArgumentException.class);
         expectation.expectMessage(is("Issuer must be same in Label and parameters"));
 
-        new KeyUri(Type.TOTP, new Label(accountName("jane.doe"), issuer(issuer1)), totpParametersWithIssuer(issuer2));
+        new KeyUri(new Label(accountName("jane.doe"), issuer(issuer1)), totpParametersWithIssuer(issuer2));
     }
 
     @Test
@@ -52,15 +52,14 @@ public class KeyUriTests {
 
         final String issuer = "My Service";
 
-        new KeyUri(Type.TOTP, new Label(accountName("jane.doe"), issuer(issuer)), totpParametersWithIssuer(issuer));
+        new KeyUri(new Label(accountName("jane.doe"), issuer(issuer)), totpParametersWithIssuer(issuer));
     }
 
     @Test
     public void should_create_a_proper_totp_uri() throws Exception {
-        final Parameters parameters = totpParametersWithIssuer("My Co");
+        final TOTPParameters parameters = totpParametersWithIssuer("My Co");
 
-        final URI uri = new KeyUri(Type.TOTP,
-                                   new Label(accountName("john.doe@example.com"), issuer("My Co")),
+        final URI uri = new KeyUri(new Label(accountName("john.doe@example.com"), issuer("My Co")),
                                    parameters).toURI();
 
         assertEquals("otpauth://totp/john.doe%40example.com%3AMy%20Co?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=My%20Co&algorithm=SHA1&digits=6&period=30", uri.toString());
@@ -68,55 +67,32 @@ public class KeyUriTests {
 
     @Test
     public void should_create_a_proper_hotp_uri() throws Exception {
-        final Parameters parameters = hotpParametersWithIssuer("My Co");
+        final HOTPParameters parameters = hotpParametersWithIssuer("My Co");
 
-        final URI uri = new KeyUri(Type.HOTP,
-                                   new Label(accountName("john.doe@example.com"), issuer("My Co")),
+        final URI uri = new KeyUri(new Label(accountName("john.doe@example.com"), issuer("My Co")),
                                    parameters).toURI();
 
         assertEquals("otpauth://hotp/john.doe%40example.com%3AMy%20Co?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=My%20Co&algorithm=SHA1&digits=6&counter=42", uri.toString());
     }
 
-    @Test
-    public void should_not_create_totp_if_parameters_have_hotp() throws Exception {
-        expectation.expect(IllegalArgumentException.class);
-        expectation.expectMessage(is("Parameters is not valid for type: TOTP"));
-
-        final Parameters parameters = hotpParametersWithIssuer("My Co");
-        new KeyUri(Type.TOTP,
-                   new Label(accountName("john.doe@example.com"), issuer("My Co")),
-                   parameters).toURI();
+    private TOTPParameters totpParametersWithIssuer(final String issuer) {
+        return ParametersBuilder.totpBuilder()
+                                .withSecret(new Secret("12345678901234567890".getBytes()))
+                                .withAlgorithm(Algorithm.SHA1)
+                                .withIssuer(new Issuer(issuer))
+                                .withDigits(Digits.SIX)
+                                .withPeriod(new Period(Duration.ofSeconds(30)))
+                                .create();
     }
 
-    @Test
-    public void should_not_create_hotp_if_parameters_have_hotp() throws Exception {
-        expectation.expect(IllegalArgumentException.class);
-        expectation.expectMessage(is("Parameters is not valid for type: HOTP"));
-
-        final Parameters parameters = totpParametersWithIssuer("My Co");
-        new KeyUri(Type.HOTP,
-                   new Label(accountName("john.doe@example.com"), issuer("My Co")),
-                   parameters).toURI();
-    }
-
-    private Parameters totpParametersWithIssuer(final String issuer) {
-        return Parameters.builder()
-                         .withSecret(new Secret("12345678901234567890".getBytes()))
-                         .withAlgorithm(Algorithm.SHA1)
-                         .withIssuer(new Issuer(issuer))
-                         .withDigits(Digits.SIX)
-                         .withPeriod(new Period(Duration.ofSeconds(30)))
-                         .createFor(Type.TOTP);
-    }
-
-    private Parameters hotpParametersWithIssuer(final String issuer) {
-        return Parameters.builder()
-                         .withSecret(new Secret("12345678901234567890".getBytes()))
-                         .withAlgorithm(Algorithm.SHA1)
-                         .withIssuer(new Issuer(issuer))
-                         .withDigits(Digits.SIX)
-                         .withCounter(new Counter(42))
-                         .createFor(Type.HOTP);
+    private HOTPParameters hotpParametersWithIssuer(final String issuer) {
+        return ParametersBuilder.hotpBuilder()
+                                .withSecret(new Secret("12345678901234567890".getBytes()))
+                                .withAlgorithm(Algorithm.SHA1)
+                                .withIssuer(new Issuer(issuer))
+                                .withDigits(Digits.SIX)
+                                .withCounter(new Counter(42))
+                                .create();
     }
 
 }

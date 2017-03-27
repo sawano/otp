@@ -19,10 +19,7 @@ package se.sawano.java.security.otp.google.keyuri;
 import org.junit.Test;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.google.keyuri.parameters.Algorithm;
-import se.sawano.java.security.otp.google.keyuri.parameters.Counter;
-import se.sawano.java.security.otp.google.keyuri.parameters.Digits;
-import se.sawano.java.security.otp.google.keyuri.parameters.Period;
+import se.sawano.java.security.otp.google.keyuri.parameters.*;
 
 import java.time.Duration;
 
@@ -40,14 +37,15 @@ public class KeyUriFactoryTests {
 
         final KeyUri keyUri = KeyUriFactory.totpKeyUriFrom(secret(), Digits.SIX, period(), accountName(), issuer());
 
+        final TOTPParameters parameters = keyUri.totpParameters().get();
         assertEquals(Type.TOTP, keyUri.type());
         assertEquals(ISSUER, keyUri.label().issuer().get().value());
         assertEquals(ACCOUNT_NAME, keyUri.label().accountName().value());
-        assertEquals(ISSUER, keyUri.parameters().issuer().get().value());
-        assertEquals(Algorithm.SHA1, keyUri.parameters().algorithm().get());
-        assertEquals(Digits.SIX, keyUri.parameters().digits().get());
-        assertEquals(PERIOD.getSeconds(), keyUri.parameters().period().get().value());
-        assertEquals("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", keyUri.parameters().secret().value());
+        assertEquals(ISSUER, parameters.issuer().get().value());
+        assertEquals(Algorithm.SHA1, parameters.algorithm().get());
+        assertEquals(Digits.SIX, parameters.digits().get());
+        assertEquals(PERIOD.getSeconds(), parameters.period().get().value());
+        assertEquals("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", parameters.secret().value());
     }
 
     @Test
@@ -55,14 +53,15 @@ public class KeyUriFactoryTests {
 
         final KeyUri keyUri = KeyUriFactory.hotpKeyUriFrom(secret(), Digits.SIX, counter(), accountName(), issuer());
 
+        final HOTPParameters parameters = keyUri.hotpParameters().get();
         assertEquals(Type.HOTP, keyUri.type());
         assertEquals(ISSUER, keyUri.label().issuer().get().value());
         assertEquals(ACCOUNT_NAME, keyUri.label().accountName().value());
-        assertEquals(ISSUER, keyUri.parameters().issuer().get().value());
-        assertEquals(Algorithm.SHA1, keyUri.parameters().algorithm().get());
-        assertEquals(Digits.SIX, keyUri.parameters().digits().get());
-        assertEquals(COUNTER, keyUri.parameters().counter().get().value());
-        assertEquals("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", keyUri.parameters().secret().value());
+        assertEquals(ISSUER, parameters.issuer().get().value());
+        assertEquals(Algorithm.SHA1, parameters.algorithm().get());
+        assertEquals(Digits.SIX, parameters.digits().get());
+        assertEquals(COUNTER, parameters.counter().get().value());
+        assertEquals("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", parameters.secret().value());
     }
 
     private Counter counter() {

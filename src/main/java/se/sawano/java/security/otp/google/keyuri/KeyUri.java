@@ -16,10 +16,12 @@
 
 package se.sawano.java.security.otp.google.keyuri;
 
+import se.sawano.java.security.otp.google.keyuri.parameters.HOTPParameters;
 import se.sawano.java.security.otp.google.keyuri.parameters.Issuer;
-import se.sawano.java.security.otp.google.keyuri.parameters.Parameters;
+import se.sawano.java.security.otp.google.keyuri.parameters.TOTPParameters;
 
 import java.net.URI;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static org.apache.commons.lang3.Validate.isTrue;
@@ -40,23 +42,48 @@ public final class KeyUri {
 
     private final Type type;
     private final Label label;
-    private final Parameters parameters;
+    private final Optional<TOTPParameters> totpParameters;
+    private final Optional<HOTPParameters> hotpParameters;
 
-    public KeyUri(final Type type, final Label label, final Parameters parameters) {
-        notNull(type);
+    public KeyUri(final Label label, final TOTPParameters parameters) {
         notNull(label);
         notNull(parameters);
 
-        this.type = type;
+        this.type = Type.TOTP;
         this.label = label;
-        this.parameters = parameters;
+        this.totpParameters = Optional.of(parameters);
+        this.hotpParameters = Optional.empty();
 
         validateIssuer();
-        validateParameters();
+    }
+
+    public KeyUri(final Label label, final HOTPParameters parameters) {
+        notNull(label);
+        notNull(parameters);
+
+        this.type = Type.HOTP;
+        this.label = label;
+        this.totpParameters = Optional.empty();
+        this.hotpParameters = Optional.of(parameters);
+
+        validateIssuer();
     }
 
     public URI toURI() {
-        return URI.create("otpauth://" + type.value() + "/" + label.asUriString() + parameters.asUriString());
+        return URI.create("otpauth://" + type.value() + "/" + label.asUriString() + parametersUriSring());
+    }
+
+    private String parametersUriSring() {
+        return totpParameters.map(TOTPParameters::asUriString)
+                             .orElseGet(() -> hotpParameters.get().asUriString());
+    }
+
+    public Optional<TOTPParameters> totpParameters() {
+        return totpParameters;
+    }
+
+    public Optional<HOTPParameters> hotpParameters() {
+        return hotpParameters;
     }
 
     public Type type() {
@@ -67,25 +94,19 @@ public final class KeyUri {
         return label;
     }
 
-    public Parameters parameters() {
-        return parameters;
-    }
-
     private void validateIssuer() {
         label.issuer()
              .map(labelIssuer -> (Consumer<Issuer>) parameterIssuer -> verifyEqual(labelIssuer, parameterIssuer))
-             .ifPresent(issuerConsumer -> parameters.issuer().ifPresent(issuerConsumer));
+             .ifPresent(issuerConsumer -> issuer().ifPresent(issuerConsumer));
+    }
+
+    private Optional<Issuer> issuer() {
+        return totpParameters.map(TOTPParameters::issuer)
+                             .orElseGet(() -> hotpParameters.get().issuer());
     }
 
     private void verifyEqual(final Label.Issuer issuer, final Issuer parameterIssuer) {
         isTrue(issuer.value().equals(parameterIssuer.value()), "Issuer must be same in Label and parameters");
     }
 
-    private void validateParameters() {
-        try {
-            parameters.validateFor(type);
-        } catch (final IllegalArgumentException e) {
-            throw new IllegalArgumentException("Parameters is not valid for type: " + type, e);
-        }
-    }
 }
