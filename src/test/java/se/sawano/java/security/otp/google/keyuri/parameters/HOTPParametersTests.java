@@ -49,7 +49,7 @@ public class HOTPParametersTests {
     public void should_create_URI_encoded_string() throws Exception {
         final HOTPParameters parameters = parametersForHotp().create();
 
-        assertEquals("?secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P&issuer=Example%20Co&algorithm=SHA1&digits=6&counter=123", parameters.asUriString());
+        assertEquals("?algorithm=SHA1&counter=123&digits=6&issuer=Example%20Co&secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", parameters.asUriString());
     }
 
     private ParametersBuilder.HotpParametersBuilder parametersWithoutCounter() {

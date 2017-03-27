@@ -16,16 +16,15 @@
 
 package se.sawano.java.security.otp.google.keyuri;
 
-import com.google.common.net.PercentEscaper;
-
 import static org.apache.commons.lang3.Validate.notNull;
 
 public class UriEncoder {
 
+    private static final String UNRESERVED_CHARACTERS = "-._~";
+
     public static String encode(final String value) {
         notNull(value);
 
-        // TODO find another lib for escaping. Guava is a bit big for just this dependency.
-        return new PercentEscaper("-._~" + ".", false).escape(value);
+        return new PercentEscaper(UNRESERVED_CHARACTERS, false).escape(value);
     }
 }

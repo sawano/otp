@@ -51,7 +51,7 @@ public class TOTPParametersTests {
     public void should_create_URI_encoded_string() throws Exception {
         final TOTPParameters parameters = parametersForTotp().create();
 
-        assertEquals("?secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P&issuer=Example%20Co&algorithm=SHA1&digits=6&period=30", parameters.asUriString());
+        assertEquals("?algorithm=SHA1&digits=6&issuer=Example%20Co&period=30&secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", parameters.asUriString());
     }
 
     private ParametersBuilder.TotpParametersBuilder parametersWithoutPeriod() {

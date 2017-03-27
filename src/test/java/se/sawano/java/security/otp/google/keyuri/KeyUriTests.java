@@ -62,7 +62,7 @@ public class KeyUriTests {
         final URI uri = new KeyUri(new Label(accountName("john.doe@example.com"), issuer("My Co")),
                                    parameters).toURI();
 
-        assertEquals("otpauth://totp/john.doe%40example.com%3AMy%20Co?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=My%20Co&algorithm=SHA1&digits=6&period=30", uri.toString());
+        assertEquals("otpauth://totp/john.doe%40example.com%3AMy%20Co?algorithm=SHA1&digits=6&issuer=My%20Co&period=30&secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", uri.toString());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class KeyUriTests {
         final URI uri = new KeyUri(new Label(accountName("john.doe@example.com"), issuer("My Co")),
                                    parameters).toURI();
 
-        assertEquals("otpauth://hotp/john.doe%40example.com%3AMy%20Co?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=My%20Co&algorithm=SHA1&digits=6&counter=42", uri.toString());
+        assertEquals("otpauth://hotp/john.doe%40example.com%3AMy%20Co?algorithm=SHA1&counter=42&digits=6&issuer=My%20Co&secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", uri.toString());
     }
 
     private TOTPParameters totpParametersWithIssuer(final String issuer) {
