@@ -29,6 +29,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.startsWith;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Issuer.issuer;
 
 public class GenericParametersTest {
 
@@ -47,26 +48,18 @@ public class GenericParametersTest {
         final Constructor<?> constructor = GenericParameters.class.getDeclaredConstructor(Secret.class, List.class);
         constructor.setAccessible(true);
         try {
-            constructor.newInstance(secret(), asList(algorithm(), issuer(), period(), period()));
+            constructor.newInstance(secret(), asList(Algorithm.SHA1, issuer("Example Co"), period(), period()));
         } catch (final InvocationTargetException e) {
             throw (Exception) e.getCause();
         }
     }
 
     private Secret secret() {
-        return new Secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
-    }
-
-    private Algorithm algorithm() {
-        return Algorithm.SHA1;
-    }
-
-    private Issuer issuer() {
-        return new Issuer("Example Co");
+        return Secret.secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
     }
 
     private Period period() {
-        return new Period(Duration.ofSeconds(30));
+        return Period.period(Duration.ofSeconds(30));
     }
 
 }

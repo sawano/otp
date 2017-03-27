@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static se.sawano.java.commons.lang.validate.Validate.notNull;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Secret.secret;
 
 // TODO refactor
 public class KeyUriFactory {
@@ -49,9 +50,10 @@ public class KeyUriFactory {
         notNull(accountName);
         notNull(issuer);
 
-        final TOTPParameters parameters = ParametersBuilder.totpBuilder().withSecret(new Secret(secret.value()))
+        final TOTPParameters parameters = ParametersBuilder.totpBuilder()
+                                                           .withSecret(secret(secret.value()))
                                                            .withAlgorithm(convert(secret.algorithm()))
-                                                           .withIssuer(new Issuer(issuer.value()))
+                                                           .withIssuer(Issuer.issuer(issuer.value()))
                                                            .withDigits(digits)
                                                            .withPeriod(period)
                                                            .create();
@@ -70,9 +72,10 @@ public class KeyUriFactory {
         notNull(accountName);
         notNull(issuer);
 
-        final HOTPParameters parameters = ParametersBuilder.hotpBuilder().withSecret(new Secret(secret.value()))
+        final HOTPParameters parameters = ParametersBuilder.hotpBuilder()
+                                                           .withSecret(secret(secret.value()))
                                                            .withAlgorithm(convert(secret.algorithm()))
-                                                           .withIssuer(new Issuer(issuer.value()))
+                                                           .withIssuer(Issuer.issuer(issuer.value()))
                                                            .withDigits(digits)
                                                            .withCounter(counter)
                                                            .create();

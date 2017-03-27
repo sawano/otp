@@ -22,11 +22,11 @@ import org.junit.rules.ExpectedException;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
 
-import java.time.Duration;
-
+import static java.time.Duration.ofSeconds;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Period.period;
 
 public class TOTPParametersTests {
 
@@ -69,11 +69,11 @@ public class TOTPParametersTests {
                                 .withAlgorithm(algorithm())
                                 .withIssuer(issuer())
                                 .withDigits(Digits.SIX)
-                                .withPeriod(period());
+                                .withPeriod(period(ofSeconds(30)));
     }
 
     private Secret secret() {
-        return new Secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
+        return Secret.secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
     }
 
     private Algorithm algorithm() {
@@ -81,10 +81,7 @@ public class TOTPParametersTests {
     }
 
     private Issuer issuer() {
-        return new Issuer("Example Co");
+        return Issuer.issuer("Example Co");
     }
 
-    private Period period() {
-        return new Period(Duration.ofSeconds(30));
-    }
 }

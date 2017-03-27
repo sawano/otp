@@ -25,9 +25,13 @@ import java.time.Duration;
  */
 public final class Period implements Parameter {
 
+    public static Period period(final Duration value) {
+        return new Period(value);
+    }
+
     private final Duration value;
 
-    public Period(final Duration value) {
+    private Period(final Duration value) {
         this.value = value;
     }
 

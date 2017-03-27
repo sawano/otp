@@ -51,6 +51,6 @@ public class SecretTests {
     }
 
     private Secret secret(final String value) {
-        return new Secret(value.getBytes());
+        return Secret.secret(value.getBytes());
     }
 }

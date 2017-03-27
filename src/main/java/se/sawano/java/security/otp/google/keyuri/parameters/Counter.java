@@ -23,9 +23,13 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
  */
 public final class Counter implements Parameter {
 
+    public static Counter counter(final long value) {
+        return new Counter(value);
+    }
+
     private final long value;
 
-    public Counter(final long value) {
+    private Counter(final long value) {
         this.value = value;
     }
 

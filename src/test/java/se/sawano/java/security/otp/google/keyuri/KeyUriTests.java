@@ -28,6 +28,9 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static se.sawano.java.security.otp.google.keyuri.Label.AccountName.accountName;
 import static se.sawano.java.security.otp.google.keyuri.Label.Issuer.issuer;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Counter.counter;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Period.period;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Secret.secret;
 
 // TODO more tests
 public class KeyUriTests {
@@ -77,21 +80,21 @@ public class KeyUriTests {
 
     private TOTPParameters totpParametersWithIssuer(final String issuer) {
         return ParametersBuilder.totpBuilder()
-                                .withSecret(new Secret("12345678901234567890".getBytes()))
+                                .withSecret(secret("12345678901234567890".getBytes()))
                                 .withAlgorithm(Algorithm.SHA1)
-                                .withIssuer(new Issuer(issuer))
+                                .withIssuer(Issuer.issuer(issuer))
                                 .withDigits(Digits.SIX)
-                                .withPeriod(new Period(Duration.ofSeconds(30)))
+                                .withPeriod(period(Duration.ofSeconds(30)))
                                 .create();
     }
 
     private HOTPParameters hotpParametersWithIssuer(final String issuer) {
         return ParametersBuilder.hotpBuilder()
-                                .withSecret(new Secret("12345678901234567890".getBytes()))
+                                .withSecret(secret("12345678901234567890".getBytes()))
                                 .withAlgorithm(Algorithm.SHA1)
-                                .withIssuer(new Issuer(issuer))
+                                .withIssuer(Issuer.issuer(issuer))
                                 .withDigits(Digits.SIX)
-                                .withCounter(new Counter(42))
+                                .withCounter(counter(42))
                                 .create();
     }
 

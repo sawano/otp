@@ -32,10 +32,15 @@ import static org.apache.commons.lang3.Validate.notNull;
  */
 public final class Secret implements Parameter, Externalizable {
 
+    public static Secret secret(final byte[] value) {
+        return new Secret(value);
+    }
+
     public static final String BASE32_PADDING = "=";
+
     private final String value;
 
-    public Secret(final byte[] value) {
+    private Secret(final byte[] value) {
         notNull(value);
 
         this.value = removePadding(base32Encode(value));

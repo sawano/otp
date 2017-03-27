@@ -18,22 +18,22 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
 
 import org.junit.Test;
 
-import java.time.Duration;
-
+import static java.time.Duration.*;
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Period.period;
 
 public class PeriodTests {
 
     @Test
     public void should_return_value_in_seconds() throws Exception {
-        assertEquals(30, new Period(Duration.ofSeconds(30)).value());
-        assertEquals(60, new Period(Duration.ofMinutes(1)).value());
-        assertEquals(1, new Period(Duration.ofMillis(1_000)).value());
+        assertEquals(30, period(ofSeconds(30)).value());
+        assertEquals(60, period(ofMinutes(1)).value());
+        assertEquals(1, period(ofMillis(1_000)).value());
     }
 
     @Test
     public void should_have_seconds_as_parameter_value() throws Exception {
-        final String pair = new Period(Duration.ofSeconds(30)).parameterPair();
+        final String pair = period(ofSeconds(30)).parameterPair();
 
         assertEquals("period=30", pair);
     }

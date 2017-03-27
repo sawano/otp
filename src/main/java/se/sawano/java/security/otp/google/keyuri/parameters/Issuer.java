@@ -36,9 +36,13 @@ public final class Issuer implements Parameter {
      */
     public static final int MAX_LENGTH = 200;
 
+    public static Issuer issuer(final String value) {
+        return new Issuer(value);
+    }
+
     private final String value;
 
-    public Issuer(final String value) {
+    private Issuer(final String value) {
         notBlank(value);
         final String trimmed = value.trim();
         inclusiveBetween(0, MAX_LENGTH, trimmed.length(), "Maximum length of issuer is %d", MAX_LENGTH);

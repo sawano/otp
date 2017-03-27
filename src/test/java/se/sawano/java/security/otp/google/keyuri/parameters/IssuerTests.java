@@ -19,12 +19,13 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Issuer.issuer;
 
 public class IssuerTests {
 
     @Test
     public void should_URI_encode_parameter_value() throws Exception {
-        final String pair = new Issuer("My Company @ Home").parameterPair();
+        final String pair = issuer("My Company @ Home").parameterPair();
 
         assertEquals("issuer=My%20Company%20%40%20Home", pair);
     }

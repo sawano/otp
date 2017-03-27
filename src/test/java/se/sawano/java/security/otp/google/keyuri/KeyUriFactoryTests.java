@@ -19,11 +19,16 @@ package se.sawano.java.security.otp.google.keyuri;
 import org.junit.Test;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.google.keyuri.parameters.*;
+import se.sawano.java.security.otp.google.keyuri.parameters.Algorithm;
+import se.sawano.java.security.otp.google.keyuri.parameters.Digits;
+import se.sawano.java.security.otp.google.keyuri.parameters.HOTPParameters;
+import se.sawano.java.security.otp.google.keyuri.parameters.TOTPParameters;
 
 import java.time.Duration;
 
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Counter.counter;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Period.period;
 
 public class KeyUriFactoryTests {
 
@@ -35,7 +40,7 @@ public class KeyUriFactoryTests {
     @Test
     public void should_create_key_uri_for_totp() throws Exception {
 
-        final KeyUri keyUri = KeyUriFactory.totpKeyUriFrom(secret(), Digits.SIX, period(), accountName(), issuer());
+        final KeyUri keyUri = KeyUriFactory.totpKeyUriFrom(secret(), Digits.SIX, period(PERIOD), accountName(), issuer());
 
         final TOTPParameters parameters = keyUri.totpParameters().get();
         assertEquals(Type.TOTP, keyUri.type());
@@ -51,7 +56,7 @@ public class KeyUriFactoryTests {
     @Test
     public void should_create_key_uri_for_hotp() throws Exception {
 
-        final KeyUri keyUri = KeyUriFactory.hotpKeyUriFrom(secret(), Digits.SIX, counter(), accountName(), issuer());
+        final KeyUri keyUri = KeyUriFactory.hotpKeyUriFrom(secret(), Digits.SIX, counter(COUNTER), accountName(), issuer());
 
         final HOTPParameters parameters = keyUri.hotpParameters().get();
         assertEquals(Type.HOTP, keyUri.type());
@@ -64,16 +69,8 @@ public class KeyUriFactoryTests {
         assertEquals("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", parameters.secret().value());
     }
 
-    private Counter counter() {
-        return new Counter(COUNTER);
-    }
-
     private SharedSecret secret() {
         return SharedSecret.fromHex("3132333435363738393031323334353637383930", ShaAlgorithm.SHA1);
-    }
-
-    private Period period() {
-        return new Period(PERIOD);
     }
 
     private Label.AccountName accountName() {

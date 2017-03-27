@@ -75,7 +75,7 @@ public class HOTPParametersTests {
     }
 
     private Secret secret() {
-        return new Secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
+        return Secret.secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
     }
 
     private Algorithm algorithm() {
@@ -83,11 +83,11 @@ public class HOTPParametersTests {
     }
 
     private Issuer issuer() {
-        return new Issuer("Example Co");
+        return Issuer.issuer("Example Co");
     }
 
     private Counter counter() {
-        return new Counter(123);
+        return Counter.counter(123);
     }
 
 }

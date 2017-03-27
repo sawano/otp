@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.google.keyuri.parameters.Issuer.issuer;
 
 @RunWith(Parameterized.class)
 public class IssuerCreationTests {
@@ -71,7 +72,7 @@ public class IssuerCreationTests {
 
     private Optional<String> tryCreate() {
         try {
-            new Issuer(value);
+            issuer(value);
             return Optional.empty();
         } catch (final IllegalArgumentException e) {
             return Optional.of(e.getMessage());
