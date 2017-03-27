@@ -18,10 +18,24 @@ package se.sawano.java.security.otp.google.keyuri;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
+/**
+ * An encoder that performs URI encoding, aka percent-encoding. See also <a href="https://tools.ietf.org/html/rfc3986">RFC 3986</a>.
+ */
 public class UriEncoder {
 
+    /**
+     * Unreserved characters as per RFC 3986. [A-Za-z0-9] are already excluded by the PercentEscaper.
+     */
     private static final String UNRESERVED_CHARACTERS = "-._~";
 
+    /**
+     * Encodes the given string.
+     *
+     * @param value
+     *         the string to encode
+     *
+     * @return the URI encoded string
+     */
     public static String encode(final String value) {
         notNull(value);
 
