@@ -36,10 +36,18 @@ import java.util.function.BiFunction;
 import static org.apache.commons.lang3.Validate.notNull;
 import static se.sawano.java.security.otp.TOTP.totp;
 
+// TODO window size?
 public class DefaultTOTPService implements TOTPService {
 
-    private static final Instant T0_UTC = Instant.EPOCH;
-    private static final Duration STEP_SIZE = Duration.ofSeconds(30);
+    /**
+     * Default Unix time to start counting time steps (0).
+     */
+    public static final Instant T0_UTC = Instant.EPOCH;
+
+    /**
+     * Default time step (30s)
+     */
+    public static final Duration STEP_SIZE = Duration.ofSeconds(30);
 
     private static final Map<ShaAlgorithm, BiFunction<SharedSecret, byte[], byte[]>> HMAC_SUPPLIERS = new HashMap<>();
     static {
@@ -74,6 +82,9 @@ public class DefaultTOTPService implements TOTPService {
      *         The Unix time to start counting time steps. Default is Unix epoch (0).
      * @param stepSize
      *         The size of the time step to use. Default is 30 seconds.
+     *
+     * @see #T0_UTC
+     * @see #STEP_SIZE
      */
     public DefaultTOTPService(final Clock clock, final Instant t0, final Duration stepSize) {
         notNull(clock);
