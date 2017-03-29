@@ -35,6 +35,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  * RFC4226 requires a shared secret with minimum length of 128 bits. And recommends the secret to be at leas 160 bits (20 bytes). This class takes an opinionated view and requires the secret to be at
  * least 20 bytes.
  */
+// TODO clean up factory methods
 public final class SharedSecret implements Externalizable {
 
     public static SharedSecret from(final String value, final ShaAlgorithm algorithm) {
