@@ -49,6 +49,7 @@ public class DefaultTOTPServiceRegressionTests {
             "31323334";
     private static final Instant T0 = Instant.EPOCH;
     private static final Duration STEP_SIZE = Duration.ofSeconds(30);
+    private static final WindowSize WINDOW_SIZE = WindowSize.windowSize(3);
 
     private static final Map<ReferenceData.Mode, ShaAlgorithm> modeToAlgorithmMap = new HashMap<>();
     static {
@@ -69,9 +70,9 @@ public class DefaultTOTPServiceRegressionTests {
 
     @Test
     public void should_create_same_totp_as_reference_implementation() throws Exception {
-        final TOTP totp = new DefaultTOTPService(() -> data.time, T0, STEP_SIZE).create(secretFor(data),
-                                                                                        TOTP.Length.EIGHT,
-                                                                                        algorithm(data.mode));
+        final TOTP totp = new DefaultTOTPService(() -> data.time, T0, STEP_SIZE, WINDOW_SIZE).create(secretFor(data),
+                                                                                                     TOTP.Length.EIGHT
+        );
 
         assertEquals(data.totp, totp.value());
     }

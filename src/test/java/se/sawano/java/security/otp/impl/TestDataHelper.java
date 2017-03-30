@@ -46,8 +46,8 @@ public class TestDataHelper {
         final SharedSecret secretSHA1 = SharedSecret.fromBase32(secretB32SHA1, SHA1);
         final SharedSecret secretSHA256 = SharedSecret.fromBase32(secretB32SHA256, SHA256);
 
-        final TOTP totpSHA1 = new DefaultTOTPService().create(secretSHA1, SIX, secretSHA1.algorithm());
-        final TOTP totpSHA256 = new DefaultTOTPService().create(secretSHA256, SIX, secretSHA256.algorithm());
+        final TOTP totpSHA1 = new DefaultTOTPService().create(secretSHA1, SIX);
+        final TOTP totpSHA256 = new DefaultTOTPService().create(secretSHA256, SIX);
 
         System.out.println("SHA1: " + totpSHA1.value());
         System.out.println("SHA256: " + totpSHA256.value());

@@ -106,9 +106,7 @@ public final class TOTP implements Externalizable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         final TOTP totp = (TOTP) o;
-
         return value.equals(totp.value);
     }
 

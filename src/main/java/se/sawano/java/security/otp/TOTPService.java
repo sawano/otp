@@ -18,6 +18,8 @@ package se.sawano.java.security.otp;
 
 public interface TOTPService {
 
-    TOTP create(SharedSecret secret, TOTP.Length length, ShaAlgorithm shaAlgorithm);
+    TOTP create(SharedSecret secret, TOTP.Length length);
+
+    boolean verify(TOTP totp, SharedSecret secret);
 
 }

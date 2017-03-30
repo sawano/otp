@@ -32,10 +32,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.stream.LongStream;
 
 import static org.apache.commons.lang3.Validate.notNull;
 import static se.sawano.java.security.otp.TOTP.totp;
+import static se.sawano.java.security.otp.impl.WindowSize.windowSize;
 
+// TODO keep track of used TOTP codes (only successful) (as per RFC)
 // TODO window size?
 public class DefaultTOTPService implements TOTPService {
 
@@ -48,6 +51,11 @@ public class DefaultTOTPService implements TOTPService {
      * Default time step (30s)
      */
     public static final Duration STEP_SIZE = Duration.ofSeconds(30);
+
+    /**
+     * Default window size (3).
+     */
+    public static final WindowSize DEFAULT_WINDOW_SIZE = windowSize(3);
 
     private static final Map<ShaAlgorithm, BiFunction<SharedSecret, byte[], byte[]>> HMAC_SUPPLIERS = new HashMap<>();
     static {
@@ -65,12 +73,13 @@ public class DefaultTOTPService implements TOTPService {
     private final Clock clock;
     private final Instant t0;
     private final Duration stepSize;
+    private final WindowSize windowSize;
 
     /**
      * Creates a {@link TOTPService}. The created service will use default TOTP values, which are: UTC time, Unix epoch (0) as {@code T0}, and a time step of 30 seconds.
      */
     public DefaultTOTPService() {
-        this(() -> java.time.Clock.systemUTC().instant(), T0_UTC, STEP_SIZE);
+        this(() -> java.time.Clock.systemUTC().instant(), T0_UTC, STEP_SIZE, DEFAULT_WINDOW_SIZE);
     }
 
     /**
@@ -86,34 +95,64 @@ public class DefaultTOTPService implements TOTPService {
      * @see #T0_UTC
      * @see #STEP_SIZE
      */
-    public DefaultTOTPService(final Clock clock, final Instant t0, final Duration stepSize) {
+    public DefaultTOTPService(final Clock clock, final Instant t0, final Duration stepSize, final WindowSize windowSize) {
         notNull(clock);
         notNull(t0);
         notNull(stepSize);
+        notNull(windowSize);
 
         this.clock = clock;
         this.t0 = t0;
         this.stepSize = stepSize;
+        this.windowSize = windowSize;
     }
 
     @Override
-    public TOTP create(final SharedSecret secret, final TOTP.Length length, final ShaAlgorithm shaAlgorithm) {
+    public TOTP create(final SharedSecret secret, final TOTP.Length length) {
         notNull(secret);
         notNull(length);
-        notNull(shaAlgorithm);
 
+        return create(secret, length, numberOfSteps());
+    }
+
+    private long numberOfSteps() {
         final long now = clock.now().toEpochMilli();
-        final long numberOfSteps = (now - t0.toEpochMilli()) / stepSize.toMillis(); // aka T
+        return (now - t0.toEpochMilli()) / stepSize.toMillis();
+    }
 
+    private TOTP create(final SharedSecret secret, final TOTP.Length length, final long numberOfSteps) {
         final byte[] numberOfStepsBytes = toHexBytes(numberOfSteps);
 
-        final byte[] hashBytes = getHmacFunction(shaAlgorithm).apply(secret, numberOfStepsBytes);
+        final byte[] hashBytes = getHmacFunction(secret.algorithm()).apply(secret, numberOfStepsBytes);
 
         final int binary = truncate(hashBytes);
 
         final int totp = binary % DIGITS_POWER_OF_10.get(length);
 
         return totp(totp, length);
+    }
+
+    @Override
+    public boolean verify(final TOTP totp, final SharedSecret secret) {
+        notNull(totp);
+        notNull(secret);
+
+        final long numberOfSteps = numberOfSteps();
+
+        final boolean isOk = LongStream.rangeClosed(-windowSize.value() / 2, windowSize.value() / 2)
+                                       .map(i -> numberOfSteps + i)
+                                       .mapToObj(steps -> verify(totp, secret, steps))
+                                       .anyMatch(Boolean.TRUE::equals);
+
+        // TODO resynchronization may take place here
+        // TODO register valid totp code as "consumed" so it can't be used again
+        return isOk;
+    }
+
+    private boolean verify(final TOTP totp, final SharedSecret secret, final long steps) {
+
+        final TOTP expectedTotp = create(secret, totp.length(), steps);
+        return expectedTotp.equals(totp);
     }
 
     private static BiFunction<SharedSecret, byte[], byte[]> getHmacFunction(final ShaAlgorithm shaAlgorithm) {
