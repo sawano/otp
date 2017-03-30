@@ -16,6 +16,7 @@
 
 package se.sawano.java.security.otp;
 
+// TODO javadoc
 public interface TOTPService {
 
     TOTP create(SharedSecret secret, TOTP.Length length);
