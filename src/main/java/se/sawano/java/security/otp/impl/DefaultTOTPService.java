@@ -39,7 +39,6 @@ import static se.sawano.java.security.otp.TOTP.totp;
 import static se.sawano.java.security.otp.impl.WindowSize.windowSize;
 
 // TODO keep track of used TOTP codes (only successful) (as per RFC)
-// TODO window size?
 public class DefaultTOTPService implements TOTPService {
 
     /**
