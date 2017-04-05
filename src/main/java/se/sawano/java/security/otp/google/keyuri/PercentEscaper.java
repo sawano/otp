@@ -89,8 +89,6 @@ final class PercentEscaper extends UnicodeEscaper {
      *         if any of the parameters were invalid
      */
     public PercentEscaper(String safeChars, boolean plusForSpace) {
-        // TODO(user): Switch to static factory methods for creation now that class is final.
-        // TODO(user): Support escapers where alphanumeric chars are not safe.
         notNull(safeChars); // eager for GWT.
         // Avoid any misunderstandings about the behavior of this escaper
         if (safeChars.matches(".*[0-9A-Za-z].*")) {
