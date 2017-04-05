@@ -29,7 +29,7 @@ public final class UserId {
         final String trimmed = value.trim();
         inclusiveBetween(0, MAX_LENGTH, trimmed.length(), "User id must be less than {} characters", MAX_LENGTH);
 
-        this.value = value;
+        this.value = trimmed;
     }
 
     public String value() {
@@ -41,5 +41,24 @@ public final class UserId {
         return "UserId{" +
                 "value='" + value + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final UserId userId = (UserId) o;
+
+        return value.equals(userId.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

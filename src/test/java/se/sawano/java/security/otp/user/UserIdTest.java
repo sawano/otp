@@ -16,14 +16,15 @@
 
 package se.sawano.java.security.otp.user;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
-import se.sawano.java.security.otp.user.UserId;
+
+import static org.junit.Assert.assertEquals;
 
 public class UserIdTest {
 
     @Test
-    public void should_not_accept_user_id_longer_than_max_length() throws Exception {
-        final UserId userId = new UserId(StringUtils.repeat("a", UserId.MAX_LENGTH));
+    public void should_trim_id() throws Exception {
+        assertEquals("myId", new UserId(" myId ").value());
     }
+
 }
