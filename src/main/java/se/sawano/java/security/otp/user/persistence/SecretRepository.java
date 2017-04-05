@@ -17,7 +17,6 @@
 package se.sawano.java.security.otp.user.persistence;
 
 import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.TOTP;
 import se.sawano.java.security.otp.user.UserId;
 
 import java.util.Optional;

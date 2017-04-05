@@ -50,8 +50,8 @@ final class GenericParameters {
     }
 
     /**
-     * Returns the parameters as an URI encoded string in the form of a URI query. The parameters will be in alphabetical order.
-     * E.g.: {@code algorithm=SHA1&digits=6&issuer=My%20Co&period=30&secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ}
+     * Returns the parameters as an URI encoded string in the form of a URI query. The parameters will be in
+     * alphabetical order. E.g.: {@code algorithm=SHA1&digits=6&issuer=My%20Co&period=30&secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ}
      *
      * @return the URI encoded query string
      */

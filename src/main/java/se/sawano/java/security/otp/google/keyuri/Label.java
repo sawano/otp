@@ -22,7 +22,6 @@ import static org.apache.commons.lang3.Validate.*;
 
 /**
  * The label is used to identify which account a key is associated with.
- *
  * <p>
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#label
  * </p>
@@ -34,7 +33,8 @@ public final class Label {
     private final Optional<Issuer> issuer;
 
     /**
-     * Creates a label with the given account name and without an issuer. Note that it's recommended to always use an issuer.
+     * Creates a label with the given account name and without an issuer. Note that it's recommended to always use an
+     * issuer.
      *
      * @param accountName
      *         the account name
@@ -68,7 +68,6 @@ public final class Label {
 
     /**
      * Account name.
-     *
      * <p>
      * E.g. "John Doe" or "john.doe@example.com".
      * </p>
@@ -80,8 +79,11 @@ public final class Label {
     }
 
     /**
-     * The issuer. This identifies the provider or service managing the account ({@link #accountName()}. The issuer helps prevent collisions where multiple services may use the same account name, such
-     * as email address. <p> E.g. "My Company" or "My Provider" </p>
+     * The issuer. This identifies the provider or service managing the account ({@link #accountName()}. The issuer
+     * helps prevent collisions where multiple services may use the same account name, such as email address.
+     * <p> E.g.
+     * "My Company" or "My Provider"
+     * </p>
      *
      * @return the issuer
      */

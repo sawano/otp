@@ -31,6 +31,7 @@ import static se.sawano.java.security.otp.google.keyuri.parameters.Secret.secret
 public class KeyUriFactory {
 
     private static final Map<ShaAlgorithm, Algorithm> ALGORITHM_MAP = new HashMap<>();
+
     static {
         ALGORITHM_MAP.put(ShaAlgorithm.SHA1, Algorithm.SHA1);
         ALGORITHM_MAP.put(ShaAlgorithm.SHA256, Algorithm.SHA256);

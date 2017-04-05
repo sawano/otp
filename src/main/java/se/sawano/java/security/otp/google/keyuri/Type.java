@@ -18,7 +18,6 @@ package se.sawano.java.security.otp.google.keyuri;
 
 /**
  * Valid types are hotp and totp, to distinguish whether the key will be used for counter-based HOTP or for TOTP.
- *
  * <p>
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#types
  * </p>

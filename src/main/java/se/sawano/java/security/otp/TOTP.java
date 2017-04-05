@@ -27,8 +27,9 @@ import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * Representation of a TOTP. This class will throw an {@link UnsupportedOperationException} if serialized in order to prevent accidental serialization of the TOTP code. Encapsulate the TOTP object in
- * another class  if the TOTP code needs to be serialized.
+ * Representation of a TOTP. This class will throw an {@link UnsupportedOperationException} if serialized in order to
+ * prevent accidental serialization of the TOTP code. Encapsulate the TOTP object in another class  if the TOTP code
+ * needs to be serialized.
  */
 public final class TOTP implements Externalizable {
 
@@ -56,8 +57,8 @@ public final class TOTP implements Externalizable {
     }
 
     /**
-     * Creates a new TOTP using the given code. The TOTP code will be left padded with zeros (0) if it's shorter than the provided length.
-     *
+     * Creates a new TOTP using the given code. The TOTP code will be left padded with zeros (0) if it's shorter than
+     * the provided length.
      * <p>
      * Example: To create a TOTP of value {@code 046372} you would do:
      * </p>

@@ -19,7 +19,8 @@ package se.sawano.java.security.otp.google.keyuri.parameters;
 interface Parameter {
 
     /**
-     * The URI style parameter string. E.g. secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P. The value will be URI encoded as appropriate so there's no need to encode it again.
+     * The URI style parameter string. E.g. secret=ENJDVNXVNESP7N2VIOHSQG5RVID77N7P. The value will be URI encoded as
+     * appropriate so there's no need to encode it again.
      *
      * @return the pair
      */

@@ -19,7 +19,8 @@ package se.sawano.java.security.otp.google.keyuri;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * An encoder that performs URI encoding, aka percent-encoding. See also <a href="https://tools.ietf.org/html/rfc3986">RFC 3986</a>.
+ * An encoder that performs URI encoding, aka percent-encoding. See also <a href="https://tools.ietf.org/html/rfc3986">RFC
+ * 3986</a>.
  */
 public class UriEncoder {
 

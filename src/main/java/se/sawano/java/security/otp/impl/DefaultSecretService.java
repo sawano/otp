@@ -38,7 +38,7 @@ public class DefaultSecretService implements SecretService {
         notNull(random);
 
         this.random = random;
-        
+
         algorithmToNumberOfBytes.put(ShaAlgorithm.SHA1, 20);
         algorithmToNumberOfBytes.put(ShaAlgorithm.SHA256, 32);
         algorithmToNumberOfBytes.put(ShaAlgorithm.SHA512, 64);

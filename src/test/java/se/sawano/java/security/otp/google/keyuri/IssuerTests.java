@@ -18,7 +18,7 @@ package se.sawano.java.security.otp.google.keyuri;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static se.sawano.java.security.otp.google.keyuri.Label.Issuer.issuer;
 
 public class IssuerTests {

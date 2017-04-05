@@ -29,13 +29,13 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * otpauth://TYPE/LABEL?PARAMETERS
- *
- * <p> See https://github.com/google/google-authenticator/wiki/Key-Uri-Format. </p>
- *
+ * <p>
+ * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format.
+ * </p>
  * <p>
  * Note: The issuer parameter is a string value indicating the provider or service this account is associated with,
- * URL-encoded according to RFC 3986. If the issuer parameter is absent, issuer information may be taken from the issuer prefix of the label. If both issuer parameter and issuer label prefix are
- * present, they should be equal.
+ * URL-encoded according to RFC 3986. If the issuer parameter is absent, issuer information may be taken from the issuer
+ * prefix of the label. If both issuer parameter and issuer label prefix are present, they should be equal.
  * </p>
  */
 public final class KeyUri {

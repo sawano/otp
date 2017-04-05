@@ -17,8 +17,9 @@
 package se.sawano.java.security.otp.google.keyuri.parameters;
 
 /**
- * REQUIRED if type is hotp: The counter parameter is required when provisioning a key for use with HOTP. It will set the initial counter value.
- *
+ * REQUIRED if type is hotp: The counter parameter is required when provisioning a key for use with HOTP. It will set
+ * the initial counter value.
+ * <p>
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#counter
  */
 public final class Counter implements Parameter {

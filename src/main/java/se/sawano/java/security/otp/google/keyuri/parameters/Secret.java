@@ -27,7 +27,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * REQUIRED: The secret parameter is an arbitrary key value encoded in Base32 according to RFC 3548.
- *
+ * <p>
  * See https://github.com/google/google-authenticator/wiki/Key-Uri-Format#secret
  */
 public final class Secret implements Parameter, Externalizable {

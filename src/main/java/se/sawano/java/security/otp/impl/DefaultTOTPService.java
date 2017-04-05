@@ -57,6 +57,7 @@ public class DefaultTOTPService implements TOTPService {
     public static final WindowSize DEFAULT_WINDOW_SIZE = windowSize(3);
 
     private static final Map<ShaAlgorithm, BiFunction<SharedSecret, byte[], byte[]>> HMAC_SUPPLIERS = new HashMap<>();
+
     static {
         HMAC_SUPPLIERS.put(ShaAlgorithm.SHA1, (secret, steps) -> HmacUtils.hmacSha1(secret.value(), steps));
         HMAC_SUPPLIERS.put(ShaAlgorithm.SHA256, (secret, steps) -> HmacUtils.hmacSha256(secret.value(), steps));
@@ -64,6 +65,7 @@ public class DefaultTOTPService implements TOTPService {
     }
 
     private static final Map<TOTP.Length, Integer> DIGITS_POWER_OF_10 = new HashMap<>();
+
     static {
         Arrays.stream(TOTP.Length.values())
               .forEach(length -> DIGITS_POWER_OF_10.put(length, (int) Math.pow(10, length.value())));
@@ -75,7 +77,8 @@ public class DefaultTOTPService implements TOTPService {
     private final WindowSize windowSize;
 
     /**
-     * Creates a {@link TOTPService}. The created service will use default TOTP values, which are: UTC time, Unix epoch (0) as {@code T0}, and a time step of 30 seconds.
+     * Creates a {@link TOTPService}. The created service will use default TOTP values, which are: UTC time, Unix epoch
+     * (0) as {@code T0}, and a time step of 30 seconds.
      */
     public DefaultTOTPService() {
         this(() -> java.time.Clock.systemUTC().instant(), T0_UTC, STEP_SIZE, DEFAULT_WINDOW_SIZE);

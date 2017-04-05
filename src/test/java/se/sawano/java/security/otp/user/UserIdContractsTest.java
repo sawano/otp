@@ -40,7 +40,7 @@ public class UserIdContractsTest {
                 {id(StringUtils.repeat('a', UserId.MAX_LENGTH) + "  "), isOk()},
                 {id(StringUtils.repeat('a', UserId.MAX_LENGTH + 1)), isNotOk()},
                 {id(StringUtils.repeat('a', UserId.MAX_LENGTH + 1_000)), isNotOk()},
-        });
+                });
     }
 
     @Parameterized.Parameter(0)

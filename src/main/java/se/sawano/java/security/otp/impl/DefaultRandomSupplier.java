@@ -21,10 +21,11 @@ import java.security.SecureRandom;
 import static org.apache.commons.lang3.Validate.isTrue;
 
 /**
- * A {@link RandomSupplier} backed by {@link SecureRandom}. The underlying {@link SecureRandom} will be reseeded after a set number of invocations. The {@link SecureRandom} instance used is seeded
- * on creation.
- *
- * <p> This supplier is thread safe. </p>
+ * A {@link RandomSupplier} backed by {@link SecureRandom}. The underlying {@link SecureRandom} will be reseeded after a
+ * set number of invocations. The {@link SecureRandom} instance used is seeded on creation.
+ * <p>
+ * This supplier is thread safe.
+ * </p>
  */
 public class DefaultRandomSupplier implements RandomSupplier {
 

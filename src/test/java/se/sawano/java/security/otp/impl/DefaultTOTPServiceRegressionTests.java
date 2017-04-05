@@ -52,6 +52,7 @@ public class DefaultTOTPServiceRegressionTests {
     private static final WindowSize WINDOW_SIZE = WindowSize.windowSize(3);
 
     private static final Map<ReferenceData.Mode, ShaAlgorithm> modeToAlgorithmMap = new HashMap<>();
+
     static {
         modeToAlgorithmMap.put(ReferenceData.Mode.SHA1, ShaAlgorithm.SHA1);
         modeToAlgorithmMap.put(ReferenceData.Mode.SHA256, ShaAlgorithm.SHA256);
