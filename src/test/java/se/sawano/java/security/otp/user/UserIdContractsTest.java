@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.user.UserId.userId;
 
 @RunWith(Parameterized.class)
 public class UserIdContractsTest {
@@ -56,7 +57,7 @@ public class UserIdContractsTest {
 
     private boolean tryCreate() {
         try {
-            new UserId(id);
+            userId(id);
             return true;
         } catch (NullPointerException | IllegalArgumentException e) {
             return false;

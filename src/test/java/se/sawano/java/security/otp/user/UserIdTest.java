@@ -19,12 +19,13 @@ package se.sawano.java.security.otp.user;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.user.UserId.userId;
 
 public class UserIdTest {
 
     @Test
     public void should_trim_id() throws Exception {
-        assertEquals("myId", new UserId(" myId ").value());
+        assertEquals("myId", userId(" myId ").value());
     }
 
 }

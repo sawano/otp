@@ -22,10 +22,11 @@ import se.sawano.java.security.otp.user.UserId;
 import java.util.Optional;
 
 public interface SecretRepository {
-    // TODO implement
 
     void save(SharedSecret sharedSecret, UserId userId);
 
     Optional<SharedSecret> secretFor(UserId userId);
+
+    void deleteFor(UserId userId);
 
 }

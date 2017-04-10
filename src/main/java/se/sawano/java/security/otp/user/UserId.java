@@ -21,10 +21,14 @@ import static org.apache.commons.lang3.Validate.notBlank;
 
 public final class UserId {
 
+    public static UserId userId(final String value) {
+        return new UserId(value);
+    }
+
     public static final int MAX_LENGTH = 400;
     private final String value;
 
-    public UserId(final String value) {
+    private UserId(final String value) {
         notBlank(value);
         final String trimmed = value.trim();
         inclusiveBetween(0, MAX_LENGTH, trimmed.length(), "User id must be less than {} characters", MAX_LENGTH);
