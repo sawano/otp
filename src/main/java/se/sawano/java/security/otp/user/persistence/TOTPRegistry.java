@@ -20,7 +20,6 @@ import se.sawano.java.security.otp.TOTP;
 import se.sawano.java.security.otp.user.UserId;
 
 public interface TOTPRegistry {
-    // TODO implement
 
     void markConsumed(TOTP totp, UserId userId);
 
