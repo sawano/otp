@@ -19,12 +19,6 @@ package se.sawano.java.security.otp;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import se.sawano.java.security.otp.ShaAlgorithm;
-import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.TOTP;
-import se.sawano.java.security.otp.TOTPService;
-import se.sawano.java.security.otp.impl.Clock;
-import se.sawano.java.security.otp.impl.WindowSize;
 
 import java.time.Instant;
 import java.util.Arrays;

@@ -20,8 +20,6 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.apache.commons.lang3.StringUtils;
-import se.sawano.java.security.otp.impl.Clock;
-import se.sawano.java.security.otp.impl.WindowSize;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -34,7 +32,7 @@ import java.util.stream.LongStream;
 
 import static org.apache.commons.lang3.Validate.notNull;
 import static se.sawano.java.security.otp.TOTP.totp;
-import static se.sawano.java.security.otp.impl.WindowSize.windowSize;
+import static se.sawano.java.security.otp.WindowSize.windowSize;
 
 // TODO keep track of used TOTP codes (only successful) (as per RFC)
 public class TOTPService {

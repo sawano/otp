@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 

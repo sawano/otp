@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import java.time.Instant;
 
 /**
  * Time supplier used by the TOTP algorithm. This allows for injecting custom time zones etc.
  */
+@FunctionalInterface
 public interface Clock {
 
     Instant now();

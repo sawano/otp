@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
-import static se.sawano.java.security.otp.impl.WindowSize.windowSize;
+import static se.sawano.java.security.otp.WindowSize.windowSize;
 
 @RunWith(Parameterized.class)
 public class WindowSizeTests {
