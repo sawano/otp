@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import se.sawano.java.security.otp.RandomSupplier;
 
