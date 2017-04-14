@@ -19,6 +19,7 @@ package se.sawano.java.security.otp.google.keyuri;
 import org.junit.Test;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
+import se.sawano.java.security.otp.TestObjectFactory;
 import se.sawano.java.security.otp.google.keyuri.parameters.Algorithm;
 import se.sawano.java.security.otp.google.keyuri.parameters.Digits;
 import se.sawano.java.security.otp.google.keyuri.parameters.HOTPParameters;
@@ -70,7 +71,7 @@ public class KeyUriFactoryTests {
     }
 
     private SharedSecret secret() {
-        return SharedSecret.fromHex("3132333435363738393031323334353637383930", ShaAlgorithm.SHA1);
+        return TestObjectFactory.fromHex("3132333435363738393031323334353637383930", ShaAlgorithm.SHA1);
     }
 
     private Label.AccountName accountName() {

@@ -81,13 +81,13 @@ public class TOTPServiceRegressionTests {
 
     private SharedSecret secretFor(final ReferenceData data) {
         if (ReferenceData.Mode.SHA1.equals(data.mode)) {
-            return SharedSecret.fromHex(seed, algorithm(data.mode));
+            return TestObjectFactory.fromHex(seed, algorithm(data.mode));
         }
         if (ReferenceData.Mode.SHA256.equals(data.mode)) {
-            return SharedSecret.fromHex(seed32, algorithm(data.mode));
+            return TestObjectFactory.fromHex(seed32, algorithm(data.mode));
         }
         if (ReferenceData.Mode.SHA512.equals(data.mode)) {
-            return SharedSecret.fromHex(seed64, algorithm(data.mode));
+            return TestObjectFactory.fromHex(seed64, algorithm(data.mode));
         }
         throw new IllegalArgumentException("Unsupported mode: " + data.mode);
     }

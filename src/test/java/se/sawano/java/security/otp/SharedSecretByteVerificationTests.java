@@ -98,7 +98,7 @@ public class SharedSecretByteVerificationTests {
 
     private boolean tryCreateSharedSecret() {
         try {
-            SharedSecret.fromHex(createHexString(), algorithm);
+            TestObjectFactory.fromHex(createHexString(), algorithm);
             return true;
         } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().startsWith("Minimum length of secret is"));

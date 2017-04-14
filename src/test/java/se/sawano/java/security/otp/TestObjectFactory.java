@@ -16,13 +16,36 @@
 
 package se.sawano.java.security.otp;
 
-import static se.sawano.java.security.otp.CodecUtils.decodeBase32;
+import java.nio.charset.Charset;
+
+import static org.apache.commons.lang3.Validate.notNull;
+import static se.sawano.java.security.otp.CodecUtils.*;
 
 public class TestObjectFactory {
+
+    private static final Charset UTF_8 = Charset.forName("UTF8");
 
     public static SharedSecret sharedSecretFromBase32(final String base32Secret, final ShaAlgorithm algorithm) {
         final byte[] bytes = decodeBase32(base32Secret.getBytes());
         return SharedSecret.from(bytes, algorithm);
     }
 
+    public static SharedSecret from(final String value, final ShaAlgorithm algorithm) {
+        return from(value, UTF_8, algorithm);
+    }
+
+    public static SharedSecret from(final String value, final Charset charset, final ShaAlgorithm algorithm) {
+        notNull(value);
+        notNull(charset);
+
+        return fromHex(encodeHexString(value, charset), algorithm);
+    }
+
+    public static SharedSecret fromHex(final String hexString, final ShaAlgorithm algorithm) {
+        notNull(hexString);
+        notNull(algorithm);
+
+        final byte[] bytes = decodeHex(hexString);
+        return SharedSecret.from(bytes, algorithm);
+    }
 }

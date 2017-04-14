@@ -20,40 +20,17 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
-import static se.sawano.java.security.otp.CodecUtils.decodeHex;
-import static se.sawano.java.security.otp.CodecUtils.encodeHexString;
 
 /**
  * RFC4226 requires a shared secret with minimum length of 128 bits. And recommends the secret to be at leas 160 bits
  * (20 bytes). This class takes an opinionated view and requires the secret to be at least 20 bytes.
  */
-// TODO clean up factory methods
 public final class SharedSecret implements Externalizable {
-
-    public static SharedSecret from(final String value, final ShaAlgorithm algorithm) {
-        return from(value, UTF_8, algorithm);
-    }
-
-    public static SharedSecret from(final String value, final Charset charset, final ShaAlgorithm algorithm) {
-        notNull(value);
-        notNull(charset);
-
-        return fromHex(encodeHexString(value, charset), algorithm);
-    }
-
-    public static SharedSecret fromHex(final String hexString, final ShaAlgorithm algorithm) {
-        notNull(hexString);
-        notNull(algorithm);
-
-        final byte[] bytes = decodeHex(hexString);
-        return new SharedSecret(bytes, algorithm);
-    }
 
     public static SharedSecret from(final byte[] bytes, final ShaAlgorithm algorithm) {
         notNull(bytes);
@@ -63,7 +40,6 @@ public final class SharedSecret implements Externalizable {
     }
 
     public static final int MINIMUM_NUMBER_OF_BYTES = 20;
-    private static final Charset UTF_8 = Charset.forName("UTF8");
 
     private final byte[] value;
     private final ShaAlgorithm algorithm;

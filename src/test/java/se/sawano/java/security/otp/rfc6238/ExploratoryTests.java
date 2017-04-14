@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
+import se.sawano.java.security.otp.TestObjectFactory;
 
 import java.math.BigInteger;
 
@@ -56,7 +57,7 @@ public class ExploratoryTests {
 
         final ReferenceDataRepository.ReferenceData data = testData.getForMode(ReferenceDataRepository.ReferenceData.Mode.SHA512);
 
-        final SharedSecret sharedSecret = SharedSecret.fromHex(seed64, ShaAlgorithm.SHA512);
+        final SharedSecret sharedSecret = TestObjectFactory.fromHex(seed64, ShaAlgorithm.SHA512);
         assertArrayEquals(hexStr2Bytes(seed64), sharedSecret.value());
 
         final int numberOfDigitsInCode = 8;

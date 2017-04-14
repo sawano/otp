@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
+import se.sawano.java.security.otp.TestObjectFactory;
 import se.sawano.java.security.otp.user.UserId;
 
 import static org.junit.Assert.*;
@@ -27,8 +28,8 @@ import static se.sawano.java.security.otp.user.UserId.userId;
 
 public class InMemSecretRepositoryTest {
 
-    private static final SharedSecret SECRET_A = SharedSecret.from(StringUtils.repeat("a", 20), ShaAlgorithm.SHA1);
-    private static final SharedSecret SECRET_B = SharedSecret.from(StringUtils.repeat("b", 20), ShaAlgorithm.SHA1);
+    private static final SharedSecret SECRET_A = TestObjectFactory.from(StringUtils.repeat("a", 20), ShaAlgorithm.SHA1);
+    private static final SharedSecret SECRET_B = TestObjectFactory.from(StringUtils.repeat("b", 20), ShaAlgorithm.SHA1);
     private InMemSecretRepository repository;
     private SharedSecret sharedSecret;
 

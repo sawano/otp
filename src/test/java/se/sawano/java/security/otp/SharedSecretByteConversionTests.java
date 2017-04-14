@@ -75,7 +75,7 @@ public class SharedSecretByteConversionTests {
 
     @Test
     public void should_produce_correct_bytes() throws Exception {
-        assertArrayEquals(expectedBytes, SharedSecret.fromHex(seed, algorithm).value());
+        assertArrayEquals(expectedBytes, TestObjectFactory.fromHex(seed, algorithm).value());
     }
 
     private static byte[] hexStr2Bytes(final String hex) {
