@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.application;
+package se.sawano.java.security.otp.user;
 
 import se.sawano.java.security.otp.SharedSecret;
 

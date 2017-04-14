@@ -17,12 +17,56 @@
 package se.sawano.java.security.otp.user;
 
 import se.sawano.java.security.otp.TOTP;
+import se.sawano.java.security.otp.TOTPService;
+import se.sawano.java.security.otp.user.persistence.SecretRepository;
+import se.sawano.java.security.otp.user.persistence.TOTPRegistry;
+
+import static org.apache.commons.lang3.Validate.notNull;
 
 // TODO javadoc
-public interface UserTOTPService {
+public class UserTOTPService {
 
-    TOTP create(UserId userId, TOTP.Length length);
+    private final SecretRepository secretRepository;
+    private final TOTPService totpService;
+    private final TOTPRegistry totpRegistry;
 
-    boolean verify(UserId userId, TOTP totp);
+    public UserTOTPService(final SecretRepository secretRepository, final TOTPService totpService, final TOTPRegistry totpRegistry) {
+        notNull(secretRepository);
+        notNull(totpService);
+        notNull(totpRegistry);
+
+        this.secretRepository = secretRepository;
+        this.totpService = totpService;
+        this.totpRegistry = totpRegistry;
+    }
+
+    public TOTP create(UserId userId, TOTP.Length length) {
+        // TODO implement
+        return null;
+    }
+
+    public boolean verify(TOTP totp, UserId userId) {
+
+        notNull(totp);
+        notNull(userId);
+
+        if (isConsumed(totp, userId)) {
+            return false;
+        }
+
+        final Boolean isOk = secretRepository.secretFor(userId)
+                                             .map(secret -> totpService.verify(totp, secret))
+                                             .orElse(false);
+        if (isOk) {
+            totpRegistry.markConsumed(totp, userId);
+        }
+
+        // TODO resynchronization may take place here
+        return isOk;
+    }
+
+    private boolean isConsumed(final TOTP totp, final UserId userId) {
+        return totpRegistry.isConsumed(totp, userId);
+    }
 
 }
