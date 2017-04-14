@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl.persistence;
+package se.sawano.java.security.otp.infrastructure;
 
 import se.sawano.java.security.otp.SharedSecret;
 import se.sawano.java.security.otp.user.UserId;

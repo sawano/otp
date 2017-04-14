@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl.persistence;
+package se.sawano.java.security.otp.infrastructure;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
