@@ -57,8 +57,7 @@ public class ExploratoryTests {
 
         final ReferenceDataRepository.ReferenceData data = testData.getForMode(ReferenceDataRepository.ReferenceData.Mode.SHA512);
 
-        final SharedSecret sharedSecret = TestObjectFactory.fromHex(seed64, ShaAlgorithm.SHA512);
-        assertArrayEquals(hexStr2Bytes(seed64), sharedSecret.value());
+        assertArrayEquals(hexStr2Bytes(seed64), secret().value());
 
         final int numberOfDigitsInCode = 8;
         final long T0 = ReferenceDataRepository.T0.toEpochMilli();
@@ -74,7 +73,7 @@ public class ExploratoryTests {
         final byte[] hextBytes2 = hexStr2Bytes(hexT);
         assertArrayEquals(hextBytes2, hexTBytes);
 
-        final byte[] hashBytes = HmacUtils.hmacSha512(sharedSecret.value(), hexTBytes);
+        final byte[] hashBytes = HmacUtils.hmacSha512(secret().value(), hexTBytes);
         System.out.println(hashBytes.length);
 
         final int binary = truncate(hashBytes);
@@ -84,6 +83,10 @@ public class ExploratoryTests {
         final String totpString = StringUtils.leftPad(Integer.toString(otp), numberOfDigitsInCode, '0');
         System.out.println(totpString);
         assertEquals(data.totp, totpString);
+    }
+
+    private SharedSecret secret() {
+        return TestObjectFactory.fromHex(seed64, ShaAlgorithm.SHA512);
     }
 
     /**

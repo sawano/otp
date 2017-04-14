@@ -20,33 +20,31 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.TestObjectFactory;
 import se.sawano.java.security.otp.user.UserId;
 
 import static org.junit.Assert.*;
+import static se.sawano.java.security.otp.TestObjectFactory.from;
 import static se.sawano.java.security.otp.user.UserId.userId;
 
 public class InMemSecretRepositoryTest {
 
-    private static final SharedSecret SECRET_A = TestObjectFactory.from(StringUtils.repeat("a", 20), ShaAlgorithm.SHA1);
-    private static final SharedSecret SECRET_B = TestObjectFactory.from(StringUtils.repeat("b", 20), ShaAlgorithm.SHA1);
     private InMemSecretRepository repository;
     private SharedSecret sharedSecret;
 
     @Test
     public void should_store_secret() throws Exception {
         givenRepository();
-        givenSharedSecret(SECRET_A);
+        givenSharedSecret(secretA());
 
         whenStoringSecretFor("john.doe");
 
-        thenSecretInRepositoryFor("john.doe").is(SECRET_A);
+        thenSecretInRepositoryFor("john.doe").is(secretA());
     }
 
     @Test
     public void should_delete_secret() throws Exception {
         givenRepository();
-        givenSharedSecretInRepositoryFor("jane").is(SECRET_A);
+        givenSharedSecretInRepositoryFor("jane").is(secretA());
 
         whenDeletingSecretFor("jane");
 
@@ -56,13 +54,21 @@ public class InMemSecretRepositoryTest {
     @Test
     public void should_only_delete_secret_for_given_user() throws Exception {
         givenRepository();
-        givenSharedSecretInRepositoryFor("john").is(SECRET_A);
-        givenSharedSecretInRepositoryFor("jane").is(SECRET_B);
+        givenSharedSecretInRepositoryFor("john").is(secretA());
+        givenSharedSecretInRepositoryFor("jane").is(secretB());
 
         whenDeletingSecretFor("john");
 
         thenNoSecretExistFor("john");
-        thenSecretInRepositoryFor("jane").is(SECRET_B);
+        thenSecretInRepositoryFor("jane").is(secretB());
+    }
+
+    private SharedSecret secretB() {
+        return from(StringUtils.repeat("b", 20), ShaAlgorithm.SHA1);
+    }
+
+    private SharedSecret secretA() {
+        return from(StringUtils.repeat("a", 20), ShaAlgorithm.SHA1);
     }
 
     private void thenNoSecretExistFor(final String userId) {
@@ -113,7 +119,7 @@ public class InMemSecretRepositoryTest {
         private Check(final UserId userId) {this.userId = userId;}
 
         public void is(final SharedSecret expectedSecret) {
-            assertEquals(expectedSecret.value(), InMemSecretRepositoryTest.this.repository.secretFor(this.userId).get().value());
+            assertArrayEquals(expectedSecret.value(), InMemSecretRepositoryTest.this.repository.secretFor(this.userId).get().value());
         }
     }
 }

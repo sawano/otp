@@ -17,10 +17,6 @@
 package se.sawano.java.security.otp;
 
 import org.junit.Test;
-import se.sawano.java.security.otp.ShaAlgorithm;
-import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.TOTP;
-import se.sawano.java.security.otp.TOTPService;
 
 import java.time.Instant;
 
@@ -36,7 +32,6 @@ public class TOTPServiceTests {
     static final int TOTP_2 = 69279037;
     static final Instant TIME_2 = Instant.ofEpochSecond(2000000000);
     static final String SECRET_STR = "12345678901234567890";
-    static final SharedSecret SECRET = SharedSecret.from(SECRET_STR.getBytes(), ShaAlgorithm.SHA1);
 
     private Instant time;
     private TOTP totp;
@@ -48,6 +43,7 @@ public class TOTPServiceTests {
     public void should_verify_totp_code_1() throws Exception {
         givenTime(TIME_1);
         givenTotp(TOTP_1);
+        givenSecret(SECRET_STR);
 
         whenVerifyingTotp();
 
@@ -58,6 +54,7 @@ public class TOTPServiceTests {
     public void should_verify_totp_code_2() throws Exception {
         givenTime(TIME_2);
         givenTotp(TOTP_2);
+        givenSecret(SECRET_STR);
 
         whenVerifyingTotp();
 
@@ -67,7 +64,7 @@ public class TOTPServiceTests {
     @Test
     public void should_create_totp() throws Exception {
         givenTime(TIME_1);
-        givenSecret(SECRET);
+        givenSecret(SECRET_STR);
 
         whenCreatingTotp();
 
@@ -78,8 +75,9 @@ public class TOTPServiceTests {
         assertEquals(expectedTotp, Integer.parseInt(createdTotp.value()));
     }
 
-    private void givenSecret(final SharedSecret secret) {
-        this.secret = secret;
+    private void givenSecret(final String secret) {
+        this.secret = TestObjectFactory.from(secret, ShaAlgorithm.SHA1);
+        ;
     }
 
     private void whenCreatingTotp() {
@@ -95,7 +93,7 @@ public class TOTPServiceTests {
     }
 
     private void whenVerifyingTotp() {
-        verifyResult = totpService().verify(totp, SECRET);
+        verifyResult = totpService().verify(totp, secret);
     }
 
     private void thenTheTotpShouldBeValid() {

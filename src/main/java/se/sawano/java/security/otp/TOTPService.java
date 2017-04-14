@@ -29,6 +29,7 @@ import java.util.function.BiFunction;
 import java.util.stream.LongStream;
 
 import static org.apache.commons.lang3.Validate.notNull;
+import static se.sawano.java.security.otp.SharedSecret.from;
 import static se.sawano.java.security.otp.TOTP.totp;
 import static se.sawano.java.security.otp.WindowSize.windowSize;
 
@@ -133,13 +134,17 @@ public class TOTPService {
 
         final long numberOfSteps = numberOfSteps();
 
+        // Make a copy to allow multiple use
+        final ShaAlgorithm algorithm = secret.algorithm();
+        final byte[] secretBytes = secret.value();
+
         final boolean isOk = LongStream.rangeClosed(-windowSize.value() / 2, windowSize.value() / 2)
                                        .map(i -> numberOfSteps + i)
-                                       .mapToObj(steps -> verify(totp, secret, steps))
+                                       .mapToObj(steps -> verify(totp, from(secretBytes, algorithm), steps))
                                        .anyMatch(Boolean.TRUE::equals);
 
-        // TODO resynchronization may take place here
-        // TODO register valid totp code as "consumed" so it can't be used again
+        Arrays.fill(secretBytes, (byte) 0);
+
         return isOk;
     }
 

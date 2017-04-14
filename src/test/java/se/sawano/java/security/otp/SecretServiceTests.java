@@ -86,7 +86,7 @@ public class SecretServiceTests {
     }
 
     private void thenNumberOfBytesInSecretIs(final int expectedNumberOfBytes) {
-        assertEquals(expectedNumberOfBytes, secret.value().length);
+        assertEquals(expectedNumberOfBytes, secret.keyLength());
     }
 
     private void thenHexSecretIs(final String expectedHexSecret) {

@@ -64,6 +64,7 @@ public class VerificationService {
             totpRegistry.markConsumed(totp, userId);
         }
 
+        // TODO resynchronization may take place here
         return isOk;
     }
 

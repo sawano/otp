@@ -26,6 +26,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 import static se.sawano.java.security.otp.TOTP.totp;
+import static se.sawano.java.security.otp.TestObjectFactory.from;
 
 @RunWith(Parameterized.class)
 public class TOTPServiceWindowSizeTests {
@@ -82,7 +83,6 @@ public class TOTPServiceWindowSizeTests {
     static final int EXPECTED_TOTP = 14050471;
     static final Instant TIME = Instant.ofEpochSecond(1111111111);
     static final String SECRET_STR = "12345678901234567890";
-    static final SharedSecret SECRET = SharedSecret.from(SECRET_STR.getBytes(), ShaAlgorithm.SHA1);
 
     @Parameterized.Parameter(0)
     public int windowSize;
@@ -93,7 +93,7 @@ public class TOTPServiceWindowSizeTests {
 
     @Test
     public void should_verify_totp_code_within_given_window() throws Exception {
-        assertEquals(isOk, totpService().verify(totp(EXPECTED_TOTP, TOTP.Length.EIGHT), SECRET));
+        assertEquals(isOk, totpService().verify(totp(EXPECTED_TOTP, TOTP.Length.EIGHT), from(SECRET_STR, ShaAlgorithm.SHA1)));
     }
 
     private TOTPService totpService() {

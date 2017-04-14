@@ -21,14 +21,16 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Arrays;
-import java.util.Objects;
 
-import static org.apache.commons.lang3.Validate.isTrue;
-import static org.apache.commons.lang3.Validate.notNull;
+import static org.apache.commons.lang3.Validate.*;
 
 /**
  * RFC4226 requires a shared secret with minimum length of 128 bits. And recommends the secret to be at leas 160 bits
  * (20 bytes). This class takes an opinionated view and requires the secret to be at least 20 bytes.
+ *
+ * <p>
+ * This value object is a read-once object and it's value can only be read once.
+ * </p>
  */
 public final class SharedSecret implements Externalizable {
 
@@ -43,18 +45,23 @@ public final class SharedSecret implements Externalizable {
 
     private final byte[] value;
     private final ShaAlgorithm algorithm;
+    private boolean consumed = false;
 
     private SharedSecret(final byte[] value, final ShaAlgorithm algorithm) {
         notNull(value);
         notNull(algorithm);
         isTrue(value.length >= MINIMUM_NUMBER_OF_BYTES, "Minimum length of secret is %d bytes", MINIMUM_NUMBER_OF_BYTES);
 
-        this.value = value;
+        this.value = value.clone();
         this.algorithm = algorithm;
     }
 
     public byte[] value() {
-        return value;
+        validState(!consumed, "Value has already been consumed");
+        final byte[] copy = value.clone();
+        Arrays.fill(value, (byte) 0);
+        consumed = true;
+        return copy;
     }
 
     /**
@@ -72,20 +79,12 @@ public final class SharedSecret implements Externalizable {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final SharedSecret secret = (SharedSecret) o;
-        return Arrays.equals(value, secret.value) &&
-                algorithm == secret.algorithm;
+        throw deny();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, algorithm);
+        throw deny();
     }
 
     @Override
@@ -95,16 +94,16 @@ public final class SharedSecret implements Externalizable {
 
     @Override
     public void writeExternal(final ObjectOutput out) throws IOException {
-        deny();
+        throw deny();
     }
 
     @Override
     public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
-        deny();
+        throw deny();
     }
 
-    private static void deny() {
-        throw new UnsupportedOperationException("Not allowed");
+    private static UnsupportedOperationException deny() {
+        return new UnsupportedOperationException("Not allowed");
     }
 
 }
