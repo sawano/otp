@@ -24,8 +24,8 @@ import java.nio.charset.Charset;
 
 class CodecUtils {
 
-    public static String encodeHexString(final String value, final Charset charset) {
-        return Hex.encodeHexString(value.getBytes(charset));
+    public static byte[] decodeBase32(final byte[] base32Bytes) {
+        return new Base32(false).decode(base32Bytes);
     }
 
     public static byte[] decodeHex(final String hexString) {
@@ -36,8 +36,8 @@ class CodecUtils {
         }
     }
 
-    public static byte[] decodeBase32(final byte[] base32Bytes) {
-        return new Base32(false).decode(base32Bytes);
+    public static String encodeToHexString(final String value, final Charset charset) {
+        return Hex.encodeHexString(value.getBytes(charset));
     }
 
     public static char[] encodeToHex(final byte[] value) {

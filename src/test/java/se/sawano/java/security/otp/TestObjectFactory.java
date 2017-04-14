@@ -38,7 +38,7 @@ public class TestObjectFactory {
         notNull(value);
         notNull(charset);
 
-        return fromHex(encodeHexString(value, charset), algorithm);
+        return fromHex(encodeToHexString(value, charset), algorithm);
     }
 
     public static SharedSecret fromHex(final String hexString, final ShaAlgorithm algorithm) {
