@@ -18,6 +18,7 @@ package se.sawano.java.security.otp.application;
 
 import se.sawano.java.security.otp.*;
 import se.sawano.java.security.otp.TOTPService;
+import se.sawano.java.security.otp.SecretService;
 import se.sawano.java.security.otp.user.UserId;
 import se.sawano.java.security.otp.user.persistence.SecretRepository;
 import se.sawano.java.security.otp.user.persistence.TOTPRegistry;

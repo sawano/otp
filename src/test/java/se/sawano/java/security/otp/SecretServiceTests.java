@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import org.junit.Test;
+import se.sawano.java.security.otp.SecretService;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
+import se.sawano.java.security.otp.impl.RandomSupplier;
 
 import static org.junit.Assert.assertEquals;
 import static se.sawano.java.security.otp.ShaAlgorithm.*;
 
-public class DefaultSecretServiceTests {
+public class SecretServiceTests {
 
     public static final String ASCII_SECRET_FROM_RFC6238 = "12345678901234567890";
     public static final String EXPECTED_SHA1_HEX_SECRET_FROM_RFC_6238_EXAMPLE = "3132333435363738393031323334353637383930";
@@ -73,7 +75,7 @@ public class DefaultSecretServiceTests {
     }
 
     private void whenGeneratingSecret() {
-        final DefaultSecretService secretService = new DefaultSecretService(fakeRandomSupplier());
+        final SecretService secretService = new SecretService(fakeRandomSupplier());
         secret = secretService.generateSharedSecret(algorithm);
     }
 

@@ -16,7 +16,34 @@
 
 package se.sawano.java.security.otp;
 
-public interface SecretService {
+import se.sawano.java.security.otp.ShaAlgorithm;
+import se.sawano.java.security.otp.SharedSecret;
+import se.sawano.java.security.otp.impl.DefaultRandomSupplier;
+import se.sawano.java.security.otp.impl.RandomSupplier;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang3.Validate.notNull;
+
+public class SecretService {
+
+    private final RandomSupplier random;
+    private final Map<ShaAlgorithm, Integer> algorithmToNumberOfBytes = new HashMap<>();
+
+    public SecretService() {
+        this(new DefaultRandomSupplier());
+    }
+
+    public SecretService(final RandomSupplier random) {
+        notNull(random);
+
+        this.random = random;
+
+        algorithmToNumberOfBytes.put(ShaAlgorithm.SHA1, 20);
+        algorithmToNumberOfBytes.put(ShaAlgorithm.SHA256, 32);
+        algorithmToNumberOfBytes.put(ShaAlgorithm.SHA512, 64);
+    }
 
     /**
      * Create a new shared secret.
@@ -26,6 +53,18 @@ public interface SecretService {
      *
      * @return the newly generated secret
      */
-    SharedSecret generateSharedSecret(ShaAlgorithm algorithm);
+    public SharedSecret generateSharedSecret(final ShaAlgorithm algorithm) {
+        notNull(algorithm);
+
+        return generateSharedSecret(algorithm, algorithmToNumberOfBytes.get(algorithm));
+    }
+
+    public SharedSecret generateSharedSecret(final ShaAlgorithm algorithm, final int numberOfBytes) {
+        final byte[] bytes = new byte[numberOfBytes];
+
+        random.nextBytes(bytes);
+
+        return SharedSecret.from(bytes, algorithm);
+    }
 
 }

@@ -18,10 +18,6 @@ package se.sawano.java.security.otp;
 
 import org.apache.commons.codec.binary.Base32;
 import org.junit.Test;
-import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.TOTP;
-import se.sawano.java.security.otp.TOTPService;
-import se.sawano.java.security.otp.impl.DefaultSecretService;
 
 import static se.sawano.java.security.otp.ShaAlgorithm.SHA1;
 import static se.sawano.java.security.otp.ShaAlgorithm.SHA256;
@@ -34,7 +30,7 @@ public class TestDataHelper {
 
     @Test
     public void should_generate_new_secret() throws Exception {
-        final SharedSecret secret = new DefaultSecretService().generateSharedSecret(SHA1);
+        final SharedSecret secret = new SecretService().generateSharedSecret(SHA1);
 
         System.out.println(new Base32(false).encodeAsString(secret.value()));
 
