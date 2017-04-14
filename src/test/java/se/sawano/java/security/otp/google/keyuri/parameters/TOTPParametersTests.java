@@ -20,7 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import se.sawano.java.security.otp.ShaAlgorithm;
-import se.sawano.java.security.otp.SharedSecret;
+import se.sawano.java.security.otp.TestObjectFactory;
 
 import static java.time.Duration.ofSeconds;
 import static org.hamcrest.core.Is.is;
@@ -73,7 +73,7 @@ public class TOTPParametersTests {
     }
 
     private Secret secret() {
-        return Secret.secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
+        return Secret.secret(TestObjectFactory.sharedSecretFromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
     }
 
     private Algorithm algorithm() {

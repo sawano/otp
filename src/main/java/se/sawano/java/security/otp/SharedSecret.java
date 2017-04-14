@@ -26,7 +26,8 @@ import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
-import static se.sawano.java.security.otp.CodecUtils.*;
+import static se.sawano.java.security.otp.CodecUtils.decodeHex;
+import static se.sawano.java.security.otp.CodecUtils.encodeHexString;
 
 /**
  * RFC4226 requires a shared secret with minimum length of 128 bits. And recommends the secret to be at leas 160 bits
@@ -52,14 +53,6 @@ public final class SharedSecret implements Externalizable {
 
         final byte[] bytes = decodeHex(hexString);
         return new SharedSecret(bytes, algorithm);
-    }
-
-    public static SharedSecret fromBase32(final String base32String, final ShaAlgorithm algorithm) {
-        notNull(base32String);
-        notNull(algorithm);
-
-        final byte[] bytes = decodeBase32(base32String);
-        return from(bytes, algorithm);
     }
 
     public static SharedSecret from(final byte[] bytes, final ShaAlgorithm algorithm) {
@@ -99,10 +92,6 @@ public final class SharedSecret implements Externalizable {
 
     public ShaAlgorithm algorithm() {
         return algorithm;
-    }
-
-    public String asHexString() {
-        return encodeToHex(value);
     }
 
     @Override

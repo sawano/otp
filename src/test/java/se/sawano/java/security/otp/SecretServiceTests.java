@@ -19,6 +19,7 @@ package se.sawano.java.security.otp;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static se.sawano.java.security.otp.CodecUtils.encodeToHex;
 import static se.sawano.java.security.otp.ShaAlgorithm.*;
 
 public class SecretServiceTests {
@@ -89,6 +90,6 @@ public class SecretServiceTests {
     }
 
     private void thenHexSecretIs(final String expectedHexSecret) {
-        assertEquals(expectedHexSecret, secret.asHexString());
+        assertEquals(expectedHexSecret, new String(encodeToHex(secret.value())));
     }
 }

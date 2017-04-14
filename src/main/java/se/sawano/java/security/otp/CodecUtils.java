@@ -36,11 +36,11 @@ class CodecUtils {
         }
     }
 
-    public static byte[] decodeBase32(final String base32String) {
-        return new Base32(false).decode(base32String);
+    public static byte[] decodeBase32(final byte[] base32Bytes) {
+        return new Base32(false).decode(base32Bytes);
     }
 
-    public static String encodeToHex(final byte[] value) {
-        return Hex.encodeHexString(value);
+    public static char[] encodeToHex(final byte[] value) {
+        return Hex.encodeHex(value);
     }
 }

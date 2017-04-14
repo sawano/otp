@@ -20,7 +20,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import se.sawano.java.security.otp.ShaAlgorithm;
-import se.sawano.java.security.otp.SharedSecret;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -29,6 +28,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.startsWith;
+import static se.sawano.java.security.otp.TestObjectFactory.sharedSecretFromBase32;
 import static se.sawano.java.security.otp.google.keyuri.parameters.Issuer.issuer;
 
 public class GenericParametersTest {
@@ -55,7 +55,7 @@ public class GenericParametersTest {
     }
 
     private Secret secret() {
-        return Secret.secret(SharedSecret.fromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
+        return Secret.secret(sharedSecretFromBase32("ENJDVNXVNESP7N2VIOHSQG5RVID77N7P", ShaAlgorithm.SHA1).value());
     }
 
     private Period period() {
