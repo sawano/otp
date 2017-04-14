@@ -16,10 +16,7 @@
 
 package se.sawano.java.security.otp;
 
-import se.sawano.java.security.otp.ShaAlgorithm;
-import se.sawano.java.security.otp.SharedSecret;
 import se.sawano.java.security.otp.impl.DefaultRandomSupplier;
-import se.sawano.java.security.otp.impl.RandomSupplier;
 
 import java.util.HashMap;
 import java.util.Map;

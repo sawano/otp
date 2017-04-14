@@ -17,10 +17,6 @@
 package se.sawano.java.security.otp;
 
 import org.junit.Test;
-import se.sawano.java.security.otp.SecretService;
-import se.sawano.java.security.otp.ShaAlgorithm;
-import se.sawano.java.security.otp.SharedSecret;
-import se.sawano.java.security.otp.impl.RandomSupplier;
 
 import static org.junit.Assert.assertEquals;
 import static se.sawano.java.security.otp.ShaAlgorithm.*;

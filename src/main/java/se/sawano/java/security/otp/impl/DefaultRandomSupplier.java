@@ -16,6 +16,8 @@
 
 package se.sawano.java.security.otp.impl;
 
+import se.sawano.java.security.otp.RandomSupplier;
+
 import java.security.SecureRandom;
 
 import static org.apache.commons.lang3.Validate.isTrue;
