@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +22,9 @@ import org.junit.runners.Parameterized;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
 import se.sawano.java.security.otp.TOTP;
+import se.sawano.java.security.otp.TOTPService;
+import se.sawano.java.security.otp.impl.Clock;
+import se.sawano.java.security.otp.impl.WindowSize;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -31,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static se.sawano.java.security.otp.TOTP.totp;
 
 @RunWith(Parameterized.class)
-public class DefaultTOTPServiceWindowSizeTests {
+public class TOTPServiceWindowSizeTests {
 
     @Parameterized.Parameters(name = "{index} windowSize={0}, window={1}, {2}")
     public static Collection<Object[]> data() {
@@ -99,8 +102,8 @@ public class DefaultTOTPServiceWindowSizeTests {
         assertEquals(isOk, totpService().verify(totp(EXPECTED_TOTP, TOTP.Length.EIGHT), SECRET));
     }
 
-    private DefaultTOTPService totpService() {
-        final Clock clock = () -> TIME.plus(DefaultTOTPService.STEP_SIZE.multipliedBy(window));
-        return new DefaultTOTPService(clock, DefaultTOTPService.T0_UTC, DefaultTOTPService.STEP_SIZE, WindowSize.windowSize(windowSize));
+    private TOTPService totpService() {
+        final Clock clock = () -> TIME.plus(TOTPService.STEP_SIZE.multipliedBy(window));
+        return new TOTPService(clock, TOTPService.T0_UTC, TOTPService.STEP_SIZE, WindowSize.windowSize(windowSize));
     }
 }

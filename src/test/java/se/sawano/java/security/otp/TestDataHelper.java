@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import org.apache.commons.codec.binary.Base32;
 import org.junit.Test;
 import se.sawano.java.security.otp.SharedSecret;
 import se.sawano.java.security.otp.TOTP;
+import se.sawano.java.security.otp.TOTPService;
+import se.sawano.java.security.otp.impl.DefaultSecretService;
 
 import static se.sawano.java.security.otp.ShaAlgorithm.SHA1;
 import static se.sawano.java.security.otp.ShaAlgorithm.SHA256;
@@ -46,8 +48,8 @@ public class TestDataHelper {
         final SharedSecret secretSHA1 = SharedSecret.fromBase32(secretB32SHA1, SHA1);
         final SharedSecret secretSHA256 = SharedSecret.fromBase32(secretB32SHA256, SHA256);
 
-        final TOTP totpSHA1 = new DefaultTOTPService().create(secretSHA1, SIX);
-        final TOTP totpSHA256 = new DefaultTOTPService().create(secretSHA256, SIX);
+        final TOTP totpSHA1 = new TOTPService().create(secretSHA1, SIX);
+        final TOTP totpSHA256 = new TOTPService().create(secretSHA256, SIX);
 
         System.out.println("SHA1: " + totpSHA1.value());
         System.out.println("SHA256: " + totpSHA256.value());

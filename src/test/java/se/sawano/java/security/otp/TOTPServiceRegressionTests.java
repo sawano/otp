@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +22,8 @@ import org.junit.runners.Parameterized;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
 import se.sawano.java.security.otp.TOTP;
+import se.sawano.java.security.otp.TOTPService;
+import se.sawano.java.security.otp.impl.WindowSize;
 import se.sawano.java.security.otp.rfc6238.ReferenceDataRepository;
 import se.sawano.java.security.otp.rfc6238.ReferenceDataRepository.ReferenceData;
 
@@ -35,7 +37,7 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class DefaultTOTPServiceRegressionTests {
+public class TOTPServiceRegressionTests {
 
     // Seed for HMAC-SHA1 - 20 bytes
     private static final String seed = "3132333435363738393031323334353637383930";
@@ -71,8 +73,8 @@ public class DefaultTOTPServiceRegressionTests {
 
     @Test
     public void should_create_same_totp_as_reference_implementation() throws Exception {
-        final TOTP totp = new DefaultTOTPService(() -> data.time, T0, STEP_SIZE, WINDOW_SIZE).create(secretFor(data),
-                                                                                                     TOTP.Length.EIGHT
+        final TOTP totp = new TOTPService(() -> data.time, T0, STEP_SIZE, WINDOW_SIZE).create(secretFor(data),
+                                                                                              TOTP.Length.EIGHT
         );
 
         assertEquals(data.totp, totp.value());

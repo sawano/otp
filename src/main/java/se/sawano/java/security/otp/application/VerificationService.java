@@ -17,6 +17,7 @@
 package se.sawano.java.security.otp.application;
 
 import se.sawano.java.security.otp.*;
+import se.sawano.java.security.otp.TOTPService;
 import se.sawano.java.security.otp.user.UserId;
 import se.sawano.java.security.otp.user.persistence.SecretRepository;
 import se.sawano.java.security.otp.user.persistence.TOTPRegistry;
@@ -32,7 +33,10 @@ public class VerificationService {
     private final TOTPRegistry totpRegistry;
     private final SecretRepository secretRepository;
 
-    public VerificationService(final TOTPService underlyingService, final SecretService secretService, final TOTPRegistry totpRegistry, final SecretRepository secretRepository) {
+    public VerificationService(final TOTPService underlyingService,
+                               final SecretService secretService,
+                               final TOTPRegistry totpRegistry,
+                               final SecretRepository secretRepository) {
         notNull(underlyingService);
         notNull(secretService);
         notNull(totpRegistry);

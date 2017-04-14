@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package se.sawano.java.security.otp.impl;
+package se.sawano.java.security.otp;
 
 import org.junit.Test;
 import se.sawano.java.security.otp.ShaAlgorithm;
 import se.sawano.java.security.otp.SharedSecret;
 import se.sawano.java.security.otp.TOTP;
+import se.sawano.java.security.otp.TOTPService;
 
 import java.time.Instant;
 
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static se.sawano.java.security.otp.TOTP.totp;
 
-public class DefaultTOTPServiceTests {
+public class TOTPServiceTests {
 
     // Example data from RFC6238
     static final int TOTP_1 = 14050471;
@@ -101,8 +102,8 @@ public class DefaultTOTPServiceTests {
         assertTrue(verifyResult);
     }
 
-    private DefaultTOTPService totpService() {
-        return new DefaultTOTPService(() -> time, DefaultTOTPService.T0_UTC, DefaultTOTPService.STEP_SIZE, DefaultTOTPService.DEFAULT_WINDOW_SIZE);
+    private TOTPService totpService() {
+        return new TOTPService(() -> time, TOTPService.T0_UTC, TOTPService.STEP_SIZE, TOTPService.DEFAULT_WINDOW_SIZE);
     }
 
 }
