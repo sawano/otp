@@ -16,8 +16,6 @@
 
 package se.sawano.java.security.otp;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -157,12 +155,8 @@ public class TOTPService {
     }
 
     private static byte[] toHexBytes(final long value) {
-        try {
-            final String hexValue = StringUtils.leftPad(Long.toHexString(value), 16, '0');
-            return Hex.decodeHex(hexValue.toCharArray());
-        } catch (final DecoderException e) {
-            throw new RuntimeException(e);
-        }
+        final String hexValue = StringUtils.leftPad(Long.toHexString(value), 16, '0');
+        return CodecUtils.decodeHex(hexValue);
     }
 
     /**

@@ -16,10 +16,6 @@
 
 package se.sawano.java.security.otp;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Base32;
-import org.apache.commons.codec.binary.Hex;
-
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -30,6 +26,7 @@ import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
+import static se.sawano.java.security.otp.CodecUtils.*;
 
 /**
  * RFC4226 requires a shared secret with minimum length of 128 bits. And recommends the secret to be at leas 160 bits
@@ -46,26 +43,22 @@ public final class SharedSecret implements Externalizable {
         notNull(value);
         notNull(charset);
 
-        return fromHex(Hex.encodeHexString(value.getBytes(charset)), algorithm);
+        return fromHex(encodeHexString(value, charset), algorithm);
     }
 
     public static SharedSecret fromHex(final String hexString, final ShaAlgorithm algorithm) {
         notNull(hexString);
         notNull(algorithm);
 
-        try {
-            final byte[] bytes = Hex.decodeHex(hexString.toCharArray());
-            return new SharedSecret(bytes, algorithm);
-        } catch (final DecoderException e) {
-            throw new RuntimeException(e);
-        }
+        final byte[] bytes = decodeHex(hexString);
+        return new SharedSecret(bytes, algorithm);
     }
 
     public static SharedSecret fromBase32(final String base32String, final ShaAlgorithm algorithm) {
         notNull(base32String);
         notNull(algorithm);
 
-        final byte[] bytes = new Base32(false).decode(base32String);
+        final byte[] bytes = decodeBase32(base32String);
         return from(bytes, algorithm);
     }
 
@@ -109,7 +102,7 @@ public final class SharedSecret implements Externalizable {
     }
 
     public String asHexString() {
-        return Hex.encodeHexString(value);
+        return encodeToHex(value);
     }
 
     @Override
